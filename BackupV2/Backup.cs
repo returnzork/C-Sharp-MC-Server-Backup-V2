@@ -127,8 +127,8 @@ namespace BackupV2
 
         private void CheckForUpdate(Object sender, EventArgs e)
         {
-            /*CheckForUpdates UPDATE = new CheckForUpdates();
-            UPDATE.CheckForUpdate();*/
+            CheckForUpdates UPDATE = new CheckForUpdates();
+            UPDATE.CheckForUpdate();
         }
 
         private void SaveWorld_CLICK(Object sender, EventArgs e)
