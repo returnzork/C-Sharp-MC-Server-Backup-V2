@@ -21,6 +21,8 @@ namespace BackupV2
     {
         ToolTip Compress = new ToolTip();  //creates the ToolTip for the compression checkbox
         ContextMenu menu = new ContextMenu();
+        decimal dec = 0.00M;
+        decimal MAX = 0.00M;
 
         Process p = new Process(); //creates the save world process
 
@@ -198,10 +200,8 @@ namespace BackupV2
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-
+            timer1.Start();
             CountdownThread.RunWorkerAsync();
-
-
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -255,12 +255,9 @@ namespace BackupV2
             string TO = XmlReader.GetBackupTo();
 
 
-
-
-
-            if (Number != 0)  //reset value when thread runs//
+            if (dec != 0.00M)  //reset value when thread runs//
             {
-                Number = 0;
+                dec = 0.00M;
             }
 
 
@@ -269,50 +266,18 @@ namespace BackupV2
 
             VALUE = CountdownTime.Text;
             VALUE2 = Convert.ToInt32(VALUE);
-           
+            MAX = Convert.ToDecimal(VALUE);
             
 
             DirFrom = FROM;
             DirTo = TO;
 
             //end variable assignment//
+            
 
-
-
-            while (Number < VALUE2 && !CountdownThread.CancellationPending)  //Checks the time left is less than the total time, AND that the countdownthread does not have a cancellation pending.//
+            while (dec < MAX && !CountdownThread.CancellationPending)  //Checks the time left is less than the total time, AND that the countdownthread does not have a cancellation pending.//
             {
-                Thread.Sleep(10000);
-                Number++;
-
-
-
-                if (CountdownThread.CancellationPending)
-                {
-                    break;
-                }
-#if RELEASE
-                Thread.Sleep(10000);
-                if (CountdownThread.CancellationPending)
-                {
-                    break;
-                }
-                Thread.Sleep(10000);
-                if (CountdownThread.CancellationPending)
-                {
-                    break;
-                }
-                Thread.Sleep(10000);
-                if (CountdownThread.CancellationPending)
-                {
-                    break;
-                }
-                Thread.Sleep(10000);
-                if (CountdownThread.CancellationPending)
-                {
-                    break;
-                }
-                Thread.Sleep(10000);
-#endif
+                //do nothing//
             }
 
             if (!CountdownThread.CancellationPending)
@@ -320,33 +285,17 @@ namespace BackupV2
 
                 if (Directory.Exists(DirTo))
                 {
-                    //FileSystem.CopyDirectory(DirFrom, DirTo);
+                    FileSystem.CopyDirectory(DirFrom, DirTo +  DateNTime + "\\");
                 }
                 else if (!Directory.Exists(DirTo))
                 {
                     Directory.CreateDirectory(DirTo);
-                    //FileSystem.CopyDirectory(DirFrom, DirTo);  //temp copy method//
-                    
-
-                    //start future copy method//
-
-                    try
-                    {
-                        FileSystem.CopyDirectory(DirFrom, DirTo);
-                    }
-                    catch (Exception EX)
-                    {
-                        MessageBox.Show(EX + "");
-                    }
-
-
-                    //end debug//
-
-
-
-
-
-                    //end future copy method//
+                    FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                }
+                else
+                {
+                    //Error//
+                    MessageBox.Show("ERROR");
                 }
             }
         }
@@ -460,6 +409,23 @@ namespace BackupV2
         private void saveWorldToolStripMenuItem_Click(object sender, EventArgs e)
         {
             p.Start();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            dec = dec + 0.0167M;
+            Math.Round(dec);
+            Console.WriteLine(dec);
+            
+            if (dec >= MAX)
+            {
+                timer1.Stop();
+            }
+        }
+
+        private void CountdownThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
         }
     }
 }
