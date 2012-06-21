@@ -28,7 +28,6 @@ namespace BackupV2
         string DirTo;
         string DirFrom;
         string DateNTime;
-        int Number = 0;
         string VALUE;
         int VALUE2;
         string OS;
@@ -70,6 +69,12 @@ namespace BackupV2
 
             //End operating system check
 
+
+            //Start Application Icon
+
+            this.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud.ico"));
+
+            //End Application Icon
 
 
             //Start Close2Tray

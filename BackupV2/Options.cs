@@ -18,12 +18,17 @@ namespace BackupV2
     {
         XmlDocument xd = new XmlDocument();
         XmlNode node1, node2, node3, node4, node5, node6;
-
+        ToolTip TT = new ToolTip();
 
         public Options()
         {
+            
             InitializeComponent();
             this.Size = new Size(350, 350);
+
+            TT.SetToolTip(UseCompression, "Check this to use Zip Compression.");
+            TT.SetToolTip(WorldFromLabel, "Enter where your world is currently located");
+            TT.SetToolTip(WorldToLabel, "Enter where you want your world backup to be located at");
         }
 
         private void Options_Load(object sender, EventArgs e)
@@ -31,6 +36,7 @@ namespace BackupV2
             ftpusage.Enabled = false;
             ftpDeXpand.Visible = false;
             ftpDeXpand.Enabled = false;
+
             FtpExpand.Enabled = false;
 
 

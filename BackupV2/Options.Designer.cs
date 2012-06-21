@@ -31,8 +31,8 @@
             this.SettingsFolder = new System.Windows.Forms.Button();
             this.BackupFrom = new System.Windows.Forms.TextBox();
             this.BackupTo = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.WorldFromLabel = new System.Windows.Forms.Label();
+            this.WorldToLabel = new System.Windows.Forms.Label();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ftpusage = new System.Windows.Forms.CheckBox();
             this.FtpExpand = new System.Windows.Forms.Button();
@@ -71,23 +71,23 @@
             this.BackupTo.Size = new System.Drawing.Size(132, 20);
             this.BackupTo.TabIndex = 3;
             // 
-            // label1
+            // WorldFromLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 210);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "World folder";
+            this.WorldFromLabel.AutoSize = true;
+            this.WorldFromLabel.Location = new System.Drawing.Point(13, 210);
+            this.WorldFromLabel.Name = "WorldFromLabel";
+            this.WorldFromLabel.Size = new System.Drawing.Size(64, 13);
+            this.WorldFromLabel.TabIndex = 4;
+            this.WorldFromLabel.Text = "World folder";
             // 
-            // label2
+            // WorldToLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(172, 210);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Backup to";
+            this.WorldToLabel.AutoSize = true;
+            this.WorldToLabel.Location = new System.Drawing.Point(172, 210);
+            this.WorldToLabel.Name = "WorldToLabel";
+            this.WorldToLabel.Size = new System.Drawing.Size(56, 13);
+            this.WorldToLabel.TabIndex = 5;
+            this.WorldToLabel.Text = "Backup to";
             // 
             // SaveButton
             // 
@@ -214,8 +214,8 @@
             this.Controls.Add(this.FtpExpand);
             this.Controls.Add(this.ftpusage);
             this.Controls.Add(this.SaveButton);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.WorldToLabel);
+            this.Controls.Add(this.WorldFromLabel);
             this.Controls.Add(this.BackupTo);
             this.Controls.Add(this.BackupFrom);
             this.Controls.Add(this.SettingsFolder);
@@ -232,8 +232,8 @@
         private System.Windows.Forms.Button SettingsFolder;
         private System.Windows.Forms.TextBox BackupFrom;
         private System.Windows.Forms.TextBox BackupTo;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label WorldFromLabel;
+        private System.Windows.Forms.Label WorldToLabel;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.CheckBox ftpusage;
         private System.Windows.Forms.Button FtpExpand;
