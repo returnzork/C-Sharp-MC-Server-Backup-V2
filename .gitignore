@@ -1,0 +1,20 @@
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.exe
+*.txt
+*.cache
+*.xml
+*.manifest
+bin/
+debug/
+release/
+Backup/bin/Debug/
+Backup/obj/x86/Debug/Backup/bin/Debug/AppUpdater.dll
+Backup/bin/Debug/Backup.application Backup/bin/Debug/Backup.exe
+Backup/bin/Debug/Backup.exe.manifest Backup/bin/Debug/Backup.pdb
+Backup/bin/Debug/Backup.vshost.application Backup/bin/Debug/Backup.vshost.exe
+Backup/bin/Debug/Backup.vshost.exe.manifest Backup/bin/Debug/Ionic.Zip.dll
+Backup/bin/Debug/version.xml

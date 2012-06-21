@@ -11,9 +11,16 @@ namespace BackupV2
     {
         public static void main(object sender, EventArgs e)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("{0}");
+            Xml_Reader Read = new Xml_Reader();
+            string server = Read.GetFtpServer();
+            string user = Read.GetFtpUser();
+            string pass = Read.GetFtpPass();
+
+
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(server);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
-            request.Credentials = new NetworkCredential("user", "password");
+
+            request.Credentials = new NetworkCredential(user, pass);
             FtpWebResponse responce = (FtpWebResponse)request.GetResponse();
 
             Stream responceStream = responce.GetResponseStream();

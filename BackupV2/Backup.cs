@@ -13,14 +13,16 @@ using System.IO;
 using System.Reflection;
 using System.Security;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace BackupV2
 {
     public partial class Backup : Form
     {
         ToolTip Compress = new ToolTip();  //creates the ToolTip for the compression checkbox
+        ContextMenu menu = new ContextMenu();
 
-        System.Diagnostics.Process p = new System.Diagnostics.Process(); //creates the save world process
+        Process p = new Process(); //creates the save world process
 
         string DirTo;
         string DirFrom;
@@ -41,7 +43,6 @@ namespace BackupV2
 
             Type Mono = Type.GetType("Mono.Runtime");
 #if DEBUG
-            
             if (Mono != null)
             {
                 MessageBox.Show("MONO");
@@ -80,11 +81,15 @@ namespace BackupV2
                 Tray.Text = "Minecraft Server Backup";
                 this.Resize += new EventHandler(Form_Resize);
                 Tray.MouseDoubleClick += new MouseEventHandler(Tray_MouseDoubleClick);
+
+                menu.MenuItems.Add("Quit",new System.EventHandler(QUIT_Click));
+                menu.MenuItems.Add("Save World", new EventHandler(SaveWorld_CLICK));
+                menu.MenuItems.Add("Check for updates");
+                Tray.ContextMenu = menu;
             }
 
 
             //End Close2Tray
-
 
 
 
@@ -120,6 +125,26 @@ namespace BackupV2
 
         }
 
+        private void SaveWorld_CLICK(Object sender, EventArgs e)
+        {
+            try
+            {
+                p.Start();
+            }
+            catch (Exception ex)
+            {
+                FileStream fs = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Error.log",FileMode.Append, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.Write(DateTime.Now.ToString() + ex.ToString() + "            ");
+                sw.Close();
+                fs.Close();
+            }
+        }
+
+        private void QUIT_Click(Object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
 
         void Tray_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -327,7 +352,6 @@ namespace BackupV2
 
             if (OS == "NET")
             {
-
                 FileInfo FI = new FileInfo(Environment.GetEnvironmentVariable("TEMP") + "new.vbs");
 
                 if (!File.Exists(Environment.GetEnvironmentVariable("TEMP") + "\\new.vbs"))
@@ -377,11 +401,19 @@ namespace BackupV2
                             p.Start();
                             FC.Cancel = false;
                             Application.Exit();
+                            if (Tray.Visible == true)
+                            {
+                                Tray.Dispose();
+                            }
                         }
                         else if (CLOSE == DialogResult.No)
                         {
                             FC.Cancel = false;
                             Application.Exit();
+                            if (Tray.Visible == true)
+                            {
+                                Tray.Dispose();
+                            }
                         }
                         else if (CLOSE == DialogResult.Cancel)
                         {

@@ -11,7 +11,6 @@ using System.Configuration;
 using System.Xml;
 using System.IO;
 using System.Xml.Linq;
-using System.Drawing;
 
 namespace BackupV2
 {
