@@ -33,8 +33,6 @@
             this.CountdownTime = new System.Windows.Forms.TextBox();
             this.CompressionBackground = new System.ComponentModel.BackgroundWorker();
             this.StartButton = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.Compression = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.CountdownThread = new System.ComponentModel.BackgroundWorker();
@@ -45,7 +43,7 @@
             this.saveWorldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.WaitTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -65,30 +63,13 @@
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(12, 128);
+            this.StartButton.Location = new System.Drawing.Point(25, 141);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(103, 38);
             this.StartButton.TabIndex = 3;
             this.StartButton.Text = "Start";
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(155, 197);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(257, 38);
-            this.progressBar1.TabIndex = 6;
-            // 
-            // Compression
-            // 
-            this.Compression.AutoSize = true;
-            this.Compression.Location = new System.Drawing.Point(326, 161);
-            this.Compression.Name = "Compression";
-            this.Compression.Size = new System.Drawing.Size(86, 17);
-            this.Compression.TabIndex = 8;
-            this.Compression.Text = "Compression";
-            this.Compression.UseVisualStyleBackColor = true;
             // 
             // toolStrip1
             // 
@@ -114,7 +95,6 @@
             // 
             this.CountdownThread.WorkerSupportsCancellation = true;
             this.CountdownThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CountdownThread_DoWork);
-            this.CountdownThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.CountdownThread_ProgressChanged);
             // 
             // Label3
             // 
@@ -127,7 +107,7 @@
             // 
             // Cancel
             // 
-            this.Cancel.Location = new System.Drawing.Point(12, 197);
+            this.Cancel.Location = new System.Drawing.Point(305, 141);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(103, 38);
             this.Cancel.TabIndex = 11;
@@ -176,22 +156,20 @@
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
-            // timer1
+            // WaitTimer
             // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.WaitTimer.Interval = 1000;
+            this.WaitTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Backup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 299);
+            this.ClientSize = new System.Drawing.Size(444, 201);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.Label3);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.Compression);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.CountdownTime);
             this.MainMenuStrip = this.menuStrip1;
@@ -213,8 +191,6 @@
         private System.Windows.Forms.TextBox CountdownTime;
         private System.ComponentModel.BackgroundWorker CompressionBackground;
         private System.Windows.Forms.Button StartButton;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.CheckBox Compression;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.ComponentModel.BackgroundWorker CountdownThread;
@@ -225,7 +201,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveWorldToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer WaitTimer;
     }
 }
 

@@ -99,7 +99,7 @@ namespace BackupV2
 
 
             Compress.ShowAlways = true;
-            if (OS == "NET")
+            /*if (OS == "NET")
             {
                 Compress.SetToolTip(Compression, "Check this to use Zip Compression");
             }
@@ -107,7 +107,7 @@ namespace BackupV2
             {
                 Compression.Enabled = false;
                 Compress.SetToolTip(Compression, "Compression is not supported on mono");
-            }
+            }*/
 
 
             //End ToolTips
@@ -200,7 +200,7 @@ namespace BackupV2
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            timer1.Start();
+            WaitTimer.Start();
             CountdownThread.RunWorkerAsync();
         }
 
@@ -243,8 +243,8 @@ namespace BackupV2
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            Compression.Enabled = true;
-            Compress.SetToolTip(Compression, "Zip Compression is not recommended when using the Mono runtime. Expect errors");
+            /*Compression.Enabled = true;
+            Compress.SetToolTip(Compression, "Zip Compression is not recommended when using the Mono runtime. Expect errors");*/
         }
 
 
@@ -419,13 +419,8 @@ namespace BackupV2
             
             if (dec >= MAX)
             {
-                timer1.Stop();
+                WaitTimer.Stop();
             }
-        }
-
-        private void CountdownThread_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-
         }
     }
 }

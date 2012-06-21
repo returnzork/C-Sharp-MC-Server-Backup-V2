@@ -11,7 +11,7 @@ namespace BackupV2
     {
 
         XmlDocument xd = new XmlDocument();
-        XmlNode node1, node2, node3, node4, node5;
+        XmlNode node1, node2, node3, node4, node5, node6;
 
 
         public string GetWorld()
@@ -47,6 +47,13 @@ namespace BackupV2
             xd.Load(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
             node5 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpServer']");
             return node5.InnerText.ToString();
+        }
+
+        public string UseCompression()
+        {
+            xd.Load(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
+            node6 = xd.SelectSingleNode("descendant::*[name(.) = 'compression']");
+            return node6.InnerText.ToString();
         }
     }
 }

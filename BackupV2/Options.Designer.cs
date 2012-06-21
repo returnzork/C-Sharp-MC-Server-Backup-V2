@@ -44,6 +44,7 @@
             this.ftpUser = new System.Windows.Forms.Label();
             this.ftpPass = new System.Windows.Forms.Label();
             this.ftpServer = new System.Windows.Forms.Label();
+            this.UseCompression = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // SettingsFolder
@@ -58,14 +59,14 @@
             // 
             // BackupFrom
             // 
-            this.BackupFrom.Location = new System.Drawing.Point(12, 142);
+            this.BackupFrom.Location = new System.Drawing.Point(12, 229);
             this.BackupFrom.Name = "BackupFrom";
             this.BackupFrom.Size = new System.Drawing.Size(132, 20);
             this.BackupFrom.TabIndex = 2;
             // 
             // BackupTo
             // 
-            this.BackupTo.Location = new System.Drawing.Point(194, 142);
+            this.BackupTo.Location = new System.Drawing.Point(175, 229);
             this.BackupTo.Name = "BackupTo";
             this.BackupTo.Size = new System.Drawing.Size(132, 20);
             this.BackupTo.TabIndex = 3;
@@ -73,7 +74,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 123);
+            this.label1.Location = new System.Drawing.Point(13, 210);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(64, 13);
             this.label1.TabIndex = 4;
@@ -82,7 +83,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(191, 123);
+            this.label2.Location = new System.Drawing.Point(172, 210);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 5;
@@ -90,7 +91,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(69, 188);
+            this.SaveButton.Location = new System.Drawing.Point(70, 268);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(177, 35);
             this.SaveButton.TabIndex = 6;
@@ -186,11 +187,22 @@
             this.ftpServer.TabIndex = 16;
             this.ftpServer.Text = "Server";
             // 
+            // UseCompression
+            // 
+            this.UseCompression.AutoSize = true;
+            this.UseCompression.Location = new System.Drawing.Point(12, 77);
+            this.UseCompression.Name = "UseCompression";
+            this.UseCompression.Size = new System.Drawing.Size(114, 17);
+            this.UseCompression.TabIndex = 17;
+            this.UseCompression.Text = "Use Compression?";
+            this.UseCompression.UseVisualStyleBackColor = true;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 242);
+            this.ClientSize = new System.Drawing.Size(684, 312);
+            this.Controls.Add(this.UseCompression);
             this.Controls.Add(this.ftpServer);
             this.Controls.Add(this.ftpPass);
             this.Controls.Add(this.ftpUser);
@@ -233,5 +245,6 @@
         private System.Windows.Forms.Label ftpUser;
         private System.Windows.Forms.Label ftpPass;
         private System.Windows.Forms.Label ftpServer;
+        private System.Windows.Forms.CheckBox UseCompression;
     }
 }

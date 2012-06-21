@@ -17,13 +17,13 @@ namespace BackupV2
     public partial class Options : Form
     {
         XmlDocument xd = new XmlDocument();
-        XmlNode node1, node2, node3, node4, node5;
+        XmlNode node1, node2, node3, node4, node5, node6;
 
 
         public Options()
         {
             InitializeComponent();
-            this.Size = new Size(350, 280);
+            this.Size = new Size(350, 350);
         }
 
         private void Options_Load(object sender, EventArgs e)
@@ -31,6 +31,7 @@ namespace BackupV2
             ftpusage.Enabled = false;
             ftpDeXpand.Visible = false;
             ftpDeXpand.Enabled = false;
+            FtpExpand.Enabled = false;
 
 
 
@@ -59,6 +60,19 @@ namespace BackupV2
             ftpUserText.Text = ftpUser;
             ftpPassText.Text = ftpPass;
             ftpServerText.Text = ftpServer;
+
+            //end ftp loading
+
+
+            //start load checkbox configuration
+
+            string Compression = XML.UseCompression();
+            if (Compression == "yes")
+            {
+                UseCompression.Checked = true;
+            }
+            Console.WriteLine("Loaded");
+            //end checkbox configuration
 
         }
 
@@ -92,6 +106,15 @@ namespace BackupV2
             node5 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpServer']");
             node5.InnerText = ftpServerText.Text;
 
+            node6 = xd.SelectSingleNode("descendant::*[name(.) = 'compression']");
+            if (UseCompression.Checked == true)
+            {
+                node6.InnerText = "yes";
+            }
+            else
+            {
+                node6.InnerText = "no";
+            }
 
             xd.Save(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
         }
@@ -103,7 +126,7 @@ namespace BackupV2
 
         private void FtpExpand_Click(object sender, EventArgs e)
         {
-            this.Size = new Size(700, 280);
+            this.Size = new Size(700, 350);
             FtpExpand.Visible = false;
             FtpExpand.Enabled = false;
 
@@ -113,7 +136,7 @@ namespace BackupV2
 
         private void ftpDeXpand_Click(object sender, EventArgs e)
         {
-            this.Size = new Size(350, 280);
+            this.Size = new Size(350, 350);
             ftpDeXpand.Enabled = false;
             ftpDeXpand.Visible = false;
 
