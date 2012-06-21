@@ -84,7 +84,7 @@ namespace BackupV2
 
                 menu.MenuItems.Add("Quit",new System.EventHandler(QUIT_Click));
                 menu.MenuItems.Add("Save World", new EventHandler(SaveWorld_CLICK));
-                menu.MenuItems.Add("Check for updates");
+                menu.MenuItems.Add("Check for updates", new EventHandler(CheckForUpdate));
                 Tray.ContextMenu = menu;
             }
 
@@ -123,6 +123,12 @@ namespace BackupV2
             //End Save world
 
 
+        }
+
+        private void CheckForUpdate(Object sender, EventArgs e)
+        {
+            /*CheckForUpdates UPDATE = new CheckForUpdates();
+            UPDATE.CheckForUpdate();*/
         }
 
         private void SaveWorld_CLICK(Object sender, EventArgs e)

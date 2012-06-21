@@ -19,7 +19,6 @@ namespace BackupV2
 
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(server);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
-
             request.Credentials = new NetworkCredential(user, pass);
             FtpWebResponse responce = (FtpWebResponse)request.GetResponse();
 

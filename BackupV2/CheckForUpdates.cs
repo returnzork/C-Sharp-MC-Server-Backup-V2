@@ -17,7 +17,8 @@ namespace BackupV2
 
 
 
-            webClient.DownloadFile("UrlToTXT", "To");
+            webClient.DownloadFile("UrlToTXTDownload", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");
+            Compare();
         }
 
         public void Compare()
@@ -55,6 +56,9 @@ namespace BackupV2
             {
                 //MessageBox.Show("DIFF");
                 //get new exe
+                string test = Application.ExecutablePath;
+                MessageBox.Show("Update downloaded. Please copy the file from " + test);
+                File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Backup.exe", test);
             }
         }
     }

@@ -90,6 +90,7 @@
     <Compile Include="Backup.Designer.cs">
       <DependentUpon>Backup.cs</DependentUpon>
     </Compile>
+    <Compile Include="CheckForUpdates.cs" />
     <Compile Include="Ftp Download.cs" />
     <Compile Include="Options.cs">
       <SubType>Form</SubType>
@@ -157,6 +158,9 @@
     <EmbeddedResource Include="saveall.vbs">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
