@@ -19,7 +19,6 @@ namespace BackupV2
 {
     public partial class Backup : Form
     {
-        ToolTip Compress = new ToolTip();  //creates the ToolTip for the compression checkbox
         ContextMenu menu = new ContextMenu();
         decimal dec = 0.00M;
         decimal MAX = 0.00M;
@@ -92,26 +91,6 @@ namespace BackupV2
 
 
             //End Close2Tray
-
-
-
-            //Start ToolTips
-
-
-            Compress.ShowAlways = true;
-            /*if (OS == "NET")
-            {
-                Compress.SetToolTip(Compression, "Check this to use Zip Compression");
-            }
-            else
-            {
-                Compression.Enabled = false;
-                Compress.SetToolTip(Compression, "Compression is not supported on mono");
-            }*/
-
-
-            //End ToolTips
-
 
 
             //Start Save world process
@@ -240,13 +219,6 @@ namespace BackupV2
             CompressionBackground.CancelAsync();
 
         }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            /*Compression.Enabled = true;
-            Compress.SetToolTip(Compression, "Zip Compression is not recommended when using the Mono runtime. Expect errors");*/
-        }
-
 
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
