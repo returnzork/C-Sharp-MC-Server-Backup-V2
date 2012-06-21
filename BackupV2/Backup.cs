@@ -72,7 +72,10 @@ namespace BackupV2
 
             //Start Application Icon
 
-            this.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud.ico"));
+            if (OS == "NET")
+            {
+                this.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud.ico"));
+            }
 
             //End Application Icon
 
