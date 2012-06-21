@@ -62,7 +62,7 @@ namespace BackupV2
                 {
                     Directory.CreateDirectory(newww);
                 }
-                File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Backup.exe", newww + "BackupV2.exe");
+                File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe", newww + "BackupV2.exe");
                 File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
                 File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
                 MessageBox.Show("Update downloaded. Please copy the file from: " + newww);
@@ -71,7 +71,7 @@ namespace BackupV2
 
         public void GetExe()
         {
-            webClient2.DownloadFile("FROM", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\backup.exe");
+            webClient2.DownloadFile("FROM", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe");
         }
     }
 }
