@@ -312,9 +312,19 @@ namespace BackupV2
             VALUE2 = Convert.ToInt32(VALUE);
             MAX = Convert.ToDecimal(VALUE);
             
+            
 
             DirFrom = FROM;
             DirTo = TO;
+
+            if (!DirFrom.EndsWith("\\") && DirFrom != "FTP")
+            {
+                DirFrom = DirFrom + "\\";
+            }
+            if (!DirTo.EndsWith("\\"))
+            {
+                DirTo = DirTo + "\\";
+            }
 
             //end variable assignment//
             
@@ -326,13 +336,18 @@ namespace BackupV2
 
             if (!CountdownThread.CancellationPending)
             {
+                DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
 
                 if (Directory.Exists(DirTo))
                 {
+                    if (!Directory.Exists(DirTo + DateNTime))
+                    {
+                        Directory.CreateDirectory(DirTo + DateNTime);
+                    }
                     if (DirFrom == "FTP")
                     {
                         Ftp_Download FTP = new Ftp_Download();
-                        FTP.main();
+                        FTP.main(DateNTime);
                     }
                     else
                     {
@@ -345,7 +360,7 @@ namespace BackupV2
                     if (DirFrom == "FTP")
                     {
                         Ftp_Download FTP = new Ftp_Download();
-                        FTP.main();
+                        FTP.main(DateNTime);
                     }
                     else
                     {
@@ -455,6 +470,12 @@ namespace BackupV2
             {
                 WaitTimer.Stop();
             }
+        }
+
+        private void CountdownProgress(object sender, ProgressChangedEventArgs e)
+        {
+            int Val = Convert.ToInt32(e);
+            progressBar1.Value = Val;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace BackupV2
 {
     public class Ftp_Download
     {
-        public void main()
+        public void main(string DateNTime)
         {
             Xml_Reader Read = new Xml_Reader();
             string server = Read.GetFtpServer();
@@ -23,21 +23,8 @@ namespace BackupV2
             {
                 foreach (string file in files)
                 {
-                    Download(file);
+                    Download(file, DateNTime);
                 }
-                /*FtpWebRequest request = (FtpWebRequest)WebRequest.Create(server);
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                request.Credentials = new NetworkCredential(user, pass);
-                FtpWebResponse responce = (FtpWebResponse)request.GetResponse();
-
-                Stream responceStream = responce.GetResponseStream();
-                StreamReader reader = new StreamReader(responceStream);
-                Console.WriteLine(reader.ReadToEnd());
-
-                Console.WriteLine("Down {0}", responce.StatusDescription);
-
-                reader.Close();
-                responce.Close();*/
             }
             catch (Exception EX)
             {
@@ -96,7 +83,7 @@ namespace BackupV2
             }
         }
 
-        private void Download(string file)
+        private void Download(string file, string DateNTime)
         {
             Xml_Reader Read = new Xml_Reader();
             string Server = Read.GetFtpServer();
@@ -105,6 +92,12 @@ namespace BackupV2
             string Folder = Read.GetFtpFolder();
             string Folder2 = Read.GetFtpFolder2();
             string LocalDirTo = Read.GetBackupTo();
+
+            if (!LocalDirTo.EndsWith("\\"))
+            {
+                LocalDirTo = LocalDirTo + "\\";
+            }
+
             try
             {
                 string uri = "ftp://" + Server + "/" + Folder + "/" + file;
@@ -123,13 +116,13 @@ namespace BackupV2
                 reqFTP.UsePassive = false;
                 FtpWebResponse responce = (FtpWebResponse)reqFTP.GetResponse();
                 Stream responceStream = responce.GetResponseStream();
-                if (!Directory.Exists(LocalDirTo + "\\" + Folder2))
+                if (!Directory.Exists(LocalDirTo + DateNTime + "\\" + Folder2))
                 {
-                    Directory.CreateDirectory(LocalDirTo + "\\" + Folder2);
+                    Directory.CreateDirectory(LocalDirTo + DateNTime + "\\" + Folder2);
                 }
-                FileStream writeStream = new FileStream(LocalDirTo + "\\" + file, FileMode.Create);
+                FileStream writeStream = new FileStream(LocalDirTo + DateNTime + "\\" + file, FileMode.Create);
 
-                int Length = 64; //tweaking this may give better performance, but when I was on 256 it gave noise from a mp3 file. Smaller value takes longer but yields nearly 1-1 raitio of size and quality.//
+                int Length = 16; //tweaking this may give better performance, but when I was on 32 it gave tiny noise (playable but..) from a mp3 file, at 256 it was unplayable. Smaller value takes longer but yields nearly 1-1 ratio of size and quality.//
 
                 Byte[] buffer = new Byte[Length];
                 int bytesRead = responceStream.Read(buffer, 0, Length);
