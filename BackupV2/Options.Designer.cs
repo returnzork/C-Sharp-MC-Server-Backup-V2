@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
             this.SettingsFolder = new System.Windows.Forms.Button();
             this.BackupFrom = new System.Windows.Forms.TextBox();
             this.BackupTo = new System.Windows.Forms.TextBox();
@@ -46,9 +47,15 @@
             this.ftpServerLabel = new System.Windows.Forms.Label();
             this.UseCompression = new System.Windows.Forms.CheckBox();
             this.FtpUsageHelpTextbox = new System.Windows.Forms.RichTextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.ServerTextBox = new System.Windows.Forms.RichTextBox();
             this.ftpFolderText = new System.Windows.Forms.TextBox();
             this.FtpFolderLabel = new System.Windows.Forms.Label();
+            this.ftpFolder2Text = new System.Windows.Forms.TextBox();
+            this.Folder2Label = new System.Windows.Forms.Label();
+            this.slash = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.FolderTextbox = new System.Windows.Forms.RichTextBox();
+            this.FtpLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SettingsFolder
@@ -135,7 +142,7 @@
             // 
             // WarningTextBox
             // 
-            this.WarningTextBox.Location = new System.Drawing.Point(352, 233);
+            this.WarningTextBox.Location = new System.Drawing.Point(352, 236);
             this.WarningTextBox.Name = "WarningTextBox";
             this.WarningTextBox.Size = new System.Drawing.Size(157, 70);
             this.WarningTextBox.TabIndex = 10;
@@ -143,7 +150,7 @@
             // 
             // ftpUserText
             // 
-            this.ftpUserText.Location = new System.Drawing.Point(372, 42);
+            this.ftpUserText.Location = new System.Drawing.Point(372, 31);
             this.ftpUserText.Name = "ftpUserText";
             this.ftpUserText.Size = new System.Drawing.Size(100, 20);
             this.ftpUserText.TabIndex = 11;
@@ -151,22 +158,22 @@
             // 
             // ftpPassText
             // 
-            this.ftpPassText.Location = new System.Drawing.Point(484, 42);
+            this.ftpPassText.Location = new System.Drawing.Point(484, 31);
             this.ftpPassText.Name = "ftpPassText";
             this.ftpPassText.Size = new System.Drawing.Size(100, 20);
             this.ftpPassText.TabIndex = 12;
             // 
             // ftpServerText
             // 
-            this.ftpServerText.Location = new System.Drawing.Point(372, 97);
+            this.ftpServerText.Location = new System.Drawing.Point(372, 86);
             this.ftpServerText.Name = "ftpServerText";
-            this.ftpServerText.Size = new System.Drawing.Size(100, 20);
+            this.ftpServerText.Size = new System.Drawing.Size(87, 20);
             this.ftpServerText.TabIndex = 13;
             // 
             // ftpUserLabel
             // 
             this.ftpUserLabel.AutoSize = true;
-            this.ftpUserLabel.Location = new System.Drawing.Point(369, 18);
+            this.ftpUserLabel.Location = new System.Drawing.Point(369, 7);
             this.ftpUserLabel.Name = "ftpUserLabel";
             this.ftpUserLabel.Size = new System.Drawing.Size(29, 13);
             this.ftpUserLabel.TabIndex = 14;
@@ -175,7 +182,7 @@
             // ftpPassLabel
             // 
             this.ftpPassLabel.AutoSize = true;
-            this.ftpPassLabel.Location = new System.Drawing.Point(481, 18);
+            this.ftpPassLabel.Location = new System.Drawing.Point(481, 7);
             this.ftpPassLabel.Name = "ftpPassLabel";
             this.ftpPassLabel.Size = new System.Drawing.Size(30, 13);
             this.ftpPassLabel.TabIndex = 15;
@@ -184,7 +191,7 @@
             // ftpServerLabel
             // 
             this.ftpServerLabel.AutoSize = true;
-            this.ftpServerLabel.Location = new System.Drawing.Point(369, 77);
+            this.ftpServerLabel.Location = new System.Drawing.Point(369, 66);
             this.ftpServerLabel.Name = "ftpServerLabel";
             this.ftpServerLabel.Size = new System.Drawing.Size(38, 13);
             this.ftpServerLabel.TabIndex = 16;
@@ -202,44 +209,101 @@
             // 
             // FtpUsageHelpTextbox
             // 
-            this.FtpUsageHelpTextbox.Location = new System.Drawing.Point(515, 233);
+            this.FtpUsageHelpTextbox.Location = new System.Drawing.Point(515, 236);
             this.FtpUsageHelpTextbox.Name = "FtpUsageHelpTextbox";
-            this.FtpUsageHelpTextbox.Size = new System.Drawing.Size(157, 70);
+            this.FtpUsageHelpTextbox.Size = new System.Drawing.Size(172, 70);
             this.FtpUsageHelpTextbox.TabIndex = 18;
             this.FtpUsageHelpTextbox.Text = "How to use:\nIn \'World Folder\' type in:\nFTP\nin ALL CAPS.";
             // 
-            // richTextBox1
+            // ServerTextBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(372, 123);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(157, 50);
-            this.richTextBox1.TabIndex = 19;
-            this.richTextBox1.Text = "For \'Server\'\nType in the IP/Hostname ONLY";
+            this.ServerTextBox.Location = new System.Drawing.Point(369, 112);
+            this.ServerTextBox.Name = "ServerTextBox";
+            this.ServerTextBox.Size = new System.Drawing.Size(90, 77);
+            this.ServerTextBox.TabIndex = 19;
+            this.ServerTextBox.Text = "For \'Server\'\nType in the IP/Hostname ONLY";
             // 
             // ftpFolderText
             // 
-            this.ftpFolderText.Location = new System.Drawing.Point(484, 97);
+            this.ftpFolderText.Location = new System.Drawing.Point(478, 86);
             this.ftpFolderText.Name = "ftpFolderText";
-            this.ftpFolderText.Size = new System.Drawing.Size(100, 20);
+            this.ftpFolderText.Size = new System.Drawing.Size(82, 20);
             this.ftpFolderText.TabIndex = 20;
             // 
             // FtpFolderLabel
             // 
             this.FtpFolderLabel.AutoSize = true;
-            this.FtpFolderLabel.Location = new System.Drawing.Point(481, 78);
+            this.FtpFolderLabel.Location = new System.Drawing.Point(481, 67);
             this.FtpFolderLabel.Name = "FtpFolderLabel";
             this.FtpFolderLabel.Size = new System.Drawing.Size(36, 13);
             this.FtpFolderLabel.TabIndex = 21;
             this.FtpFolderLabel.Text = "Folder";
             // 
+            // ftpFolder2Text
+            // 
+            this.ftpFolder2Text.Location = new System.Drawing.Point(572, 86);
+            this.ftpFolder2Text.Name = "ftpFolder2Text";
+            this.ftpFolder2Text.Size = new System.Drawing.Size(100, 20);
+            this.ftpFolder2Text.TabIndex = 22;
+            // 
+            // Folder2Label
+            // 
+            this.Folder2Label.AutoSize = true;
+            this.Folder2Label.Location = new System.Drawing.Point(569, 67);
+            this.Folder2Label.Name = "Folder2Label";
+            this.Folder2Label.Size = new System.Drawing.Size(45, 13);
+            this.Folder2Label.TabIndex = 23;
+            this.Folder2Label.Text = "Folder 2";
+            // 
+            // slash
+            // 
+            this.slash.AutoSize = true;
+            this.slash.Location = new System.Drawing.Point(462, 89);
+            this.slash.Name = "slash";
+            this.slash.Size = new System.Drawing.Size(12, 13);
+            this.slash.TabIndex = 24;
+            this.slash.Text = "/";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(560, 89);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(12, 13);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "/";
+            // 
+            // FolderTextbox
+            // 
+            this.FolderTextbox.Location = new System.Drawing.Point(478, 112);
+            this.FolderTextbox.Name = "FolderTextbox";
+            this.FolderTextbox.Size = new System.Drawing.Size(209, 118);
+            this.FolderTextbox.TabIndex = 26;
+            this.FolderTextbox.Text = resources.GetString("FolderTextbox.Text");
+            // 
+            // FtpLabel
+            // 
+            this.FtpLabel.AutoSize = true;
+            this.FtpLabel.Location = new System.Drawing.Point(339, 89);
+            this.FtpLabel.Name = "FtpLabel";
+            this.FtpLabel.Size = new System.Drawing.Size(32, 13);
+            this.FtpLabel.TabIndex = 27;
+            this.FtpLabel.Text = "ftp://";
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 312);
+            this.ClientSize = new System.Drawing.Size(686, 312);
+            this.Controls.Add(this.FtpLabel);
+            this.Controls.Add(this.FolderTextbox);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.slash);
+            this.Controls.Add(this.Folder2Label);
+            this.Controls.Add(this.ftpFolder2Text);
             this.Controls.Add(this.FtpFolderLabel);
             this.Controls.Add(this.ftpFolderText);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.ServerTextBox);
             this.Controls.Add(this.FtpUsageHelpTextbox);
             this.Controls.Add(this.UseCompression);
             this.Controls.Add(this.ftpServerLabel);
@@ -286,8 +350,14 @@
         private System.Windows.Forms.Label ftpServerLabel;
         private System.Windows.Forms.CheckBox UseCompression;
         private System.Windows.Forms.RichTextBox FtpUsageHelpTextbox;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox ServerTextBox;
         private System.Windows.Forms.TextBox ftpFolderText;
         private System.Windows.Forms.Label FtpFolderLabel;
+        private System.Windows.Forms.TextBox ftpFolder2Text;
+        private System.Windows.Forms.Label Folder2Label;
+        private System.Windows.Forms.Label slash;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RichTextBox FolderTextbox;
+        private System.Windows.Forms.Label FtpLabel;
     }
 }

@@ -45,7 +45,6 @@ namespace BackupV2
             }
         }
 
-
         public static string[] GetFileList()
         {
             Xml_Reader Read = new Xml_Reader();
@@ -53,6 +52,7 @@ namespace BackupV2
             string User = Read.GetFtpUser();
             string Pass = Read.GetFtpPass();
             string Folder = Read.GetFtpFolder();
+            string Folder2 = Read.GetFtpFolder2();
 
             string[] downloadFiles;
             StringBuilder result = new StringBuilder();
@@ -61,7 +61,7 @@ namespace BackupV2
             try
             {
                 FtpWebRequest reqFTP;
-                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + Server + "/" + Folder));
+                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + Server + "/" + Folder + "/" + Folder2));
                 reqFTP.UseBinary = true;
                 reqFTP.Credentials = new NetworkCredential(User, Pass);
                 reqFTP.Method = WebRequestMethods.Ftp.ListDirectory;
@@ -103,6 +103,7 @@ namespace BackupV2
             string User = Read.GetFtpUser();
             string Pass = Read.GetFtpPass();
             string Folder = Read.GetFtpFolder();
+            string Folder2 = Read.GetFtpFolder2();
             string LocalDirTo = Read.GetBackupTo();
             try
             {
@@ -122,8 +123,14 @@ namespace BackupV2
                 reqFTP.UsePassive = false;
                 FtpWebResponse responce = (FtpWebResponse)reqFTP.GetResponse();
                 Stream responceStream = responce.GetResponseStream();
+                if (!Directory.Exists(LocalDirTo + "\\" + Folder2))
+                {
+                    Directory.CreateDirectory(LocalDirTo + "\\" + Folder2);
+                }
                 FileStream writeStream = new FileStream(LocalDirTo + "\\" + file, FileMode.Create);
-                int Length = 2048;
+
+                int Length = 64; //tweaking this may give better performance, but when I was on 256 it gave noise from a mp3 file. Smaller value takes longer but yields nearly 1-1 raitio of size and quality.//
+
                 Byte[] buffer = new Byte[Length];
                 int bytesRead = responceStream.Read(buffer, 0, Length);
                 while (bytesRead > 0)
@@ -137,6 +144,10 @@ namespace BackupV2
             catch (WebException wEx)
             {
                 Console.WriteLine(wEx);
+            }
+            catch (AccessViolationException aEx)
+            {
+                Console.WriteLine(aEx);
             }
             catch (Exception ex)
             {

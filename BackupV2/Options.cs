@@ -17,7 +17,7 @@ namespace BackupV2
     public partial class Options : Form
     {
         XmlDocument xd = new XmlDocument();
-        XmlNode node1, node2, node3, node4, node5, node6, node7;
+        XmlNode node1, node2, node3, node4, node5, node6, node7, node8;
         ToolTip TT = new ToolTip();
 
         public Options()
@@ -33,13 +33,17 @@ namespace BackupV2
 
         private void Options_Load(object sender, EventArgs e)
         {
-#if RELEASE
+#if DEBUG
+            ftpDeXpand.Visible = false;
+#else
+            //compression
+            UseCompression.Enabled = false;
+
+            //ftp
             ftpusage.Enabled = false;
             ftpDeXpand.Visible = false;
-            ftpDeXpand.Enabled = false;
+            FtpExpand.Visible = false;
 #endif
-            FtpExpand.Enabled = true;
-            ftpDeXpand.Visible = false;
 
 
 
@@ -66,10 +70,12 @@ namespace BackupV2
             string ftpPass = XML.GetFtpPass();
             string ftpServer = XML.GetFtpServer();
             string ftpFolder = XML.GetFtpFolder();
+            string ftpFolder2 = XML.GetFtpFolder2();
             ftpUserText.Text = ftpUser;
             ftpPassText.Text = ftpPass;
             ftpServerText.Text = ftpServer;
             ftpFolderText.Text = ftpFolder;
+            ftpFolder2Text.Text = ftpFolder2;
 
             //end ftp loading
 
@@ -128,6 +134,9 @@ namespace BackupV2
 
             node7 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpFolder']");
             node7.InnerText = ftpFolderText.Text;
+
+            node8 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpFolder2']");
+            node8.InnerText = ftpFolder2Text.Text;
 
             xd.Save(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
         }

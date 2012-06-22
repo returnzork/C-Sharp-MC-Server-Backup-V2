@@ -413,6 +413,10 @@ namespace BackupV2
         {
             dec = dec + 0.0167M;
             
+#if DEBUG
+            dec = MAX;
+#endif
+
             if (dec >= MAX + 0.001M)
             {
                 WaitTimer.Stop();

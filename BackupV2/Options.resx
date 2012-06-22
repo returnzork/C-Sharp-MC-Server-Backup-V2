@@ -117,4 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FolderTextbox.Text" xml:space="preserve">
+    <value>For 'Folder'
+Type in the root of the folder you want (eg if you want to download from ftp://localhost/MyServers/Minecraft/,
+you would type MyServers in Folder.)
+For 'Folder 2'
+Type in the ending folder (eg if you want to download from ftp://localhost/MyServers/Minecraft/,
+you would type Minecraft in Folder2.)</value>
+  </data>
 </root>
