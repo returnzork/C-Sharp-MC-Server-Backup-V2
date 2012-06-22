@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 using System.Threading;
-//using Ionic.Zip;
+using Ionic.Zip;
 using System.IO;
 using System.Reflection;
 using System.Security;
@@ -44,7 +44,7 @@ namespace BackupV2
 
             if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt"))
             {
-                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Version.txt");
+                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Text_Files.Version.txt");
                 FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt", FileMode.CreateNew);
                 for (int i = 0; i < stream.Length; i++)
                     fileStream.WriteByte((byte)stream.ReadByte());
@@ -87,7 +87,7 @@ namespace BackupV2
 
             if (OS == "NET")
             {
-                this.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud.ico"));
+                this.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
             }
 
             //End Application Icon
@@ -96,7 +96,7 @@ namespace BackupV2
             //Start check for updates
 
             CheckForUpdates Updater = new CheckForUpdates();
-            string Available = Updater.Compare();
+            string Available = null/* = Updater.Compare()*/;
 
             //End check for updates
 
@@ -109,11 +109,11 @@ namespace BackupV2
             {
                 if(Available == "yes")
                 {
-                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud_Update.ico"));
+                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud_Update.ico"));
                 }
                 else
                 {
-                    Tray.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud.ico"));  //get the icon from the resources
+                    Tray.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));  //get the icon from the resources
                 }
 
                 Tray.Visible = false;
@@ -149,7 +149,7 @@ namespace BackupV2
             string Available = UPDATE.Compare();
             if (Available == "yes")
             {
-                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud_Update.ico"));
+                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud_Update.ico"));
             }
         }
 
@@ -207,7 +207,7 @@ namespace BackupV2
 
             if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config"))
             {
-                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Settings.config");
+                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Text_Files.Settings.config");
                 FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config", FileMode.CreateNew);
                 for (int i = 0; i < stream.Length; i++)
                     fileStream.WriteByte((byte)stream.ReadByte());
@@ -225,7 +225,7 @@ namespace BackupV2
 
                 if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs"))
                 {
-                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.saveall.vbs");
+                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Text_Files.saveall.vbs");
                     FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs", FileMode.CreateNew);
                     for (int i = 0; i < stream.Length; i++)
                         fileStream.WriteByte((byte)stream.ReadByte());
@@ -235,7 +235,7 @@ namespace BackupV2
                 {
                     File.Delete(Environment.GetEnvironmentVariable("appdata") + "\\returnzork\\save.vbs");
                     FI.Delete();
-                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.saveall.vbs");
+                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Text_Files.saveall.vbs");
                     FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs", FileMode.CreateNew);
                     for (int i = 0; i < stream.Length; i++)
                         fileStream.WriteByte((byte)stream.ReadByte());

@@ -52,7 +52,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Cloud.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\Cloud.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -83,27 +83,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backup.cs">
+    <Compile Include="Forms\Backup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Backup.Designer.cs">
+    <Compile Include="Forms\Backup.Designer.cs">
       <DependentUpon>Backup.cs</DependentUpon>
     </Compile>
-    <Compile Include="CheckForUpdates.cs" />
-    <Compile Include="Ftp Download.cs" />
-    <Compile Include="Options.cs">
+    <Compile Include="CS files\CheckForUpdates.cs" />
+    <Compile Include="CS files\Ftp Download.cs" />
+    <Compile Include="Forms\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Options.Designer.cs">
+    <Compile Include="Forms\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="CS files\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xml Reader.cs" />
-    <EmbeddedResource Include="Backup.resx">
+    <Compile Include="CS files\Xml Reader.cs" />
+    <EmbeddedResource Include="Forms\Backup.resx">
       <DependentUpon>Backup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Options.resx">
+    <EmbeddedResource Include="Forms\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -126,7 +126,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Settings.config">
+    <EmbeddedResource Include="Text Files\Settings.config">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -153,15 +153,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="saveall.vbs">
+    <EmbeddedResource Include="Text Files\saveall.vbs">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Cloud.ico" />
-    <EmbeddedResource Include="Cloud update.ico" />
-    <EmbeddedResource Include="Version.txt" />
+    <EmbeddedResource Include="Icons\Cloud.ico" />
+    <EmbeddedResource Include="Icons\Cloud update.ico" />
+    <EmbeddedResource Include="Text Files\Version.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Ionic.Zip.dll" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
