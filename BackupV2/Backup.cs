@@ -105,8 +105,7 @@ namespace BackupV2
 
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = Environment.GetEnvironmentVariable("TEMP") + "\\new.vbs";
-            //startInfo.Arguments = "COMMAND";
+            startInfo.FileName = Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs";
             p.StartInfo = startInfo;
 
             //End Save world
@@ -122,6 +121,9 @@ namespace BackupV2
 
         private void SaveWorld_CLICK(Object sender, EventArgs e)
         {
+            if(!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs"))
+            {
+            }
             try
             {
                 p.Start();
@@ -166,7 +168,7 @@ namespace BackupV2
                 Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork");
             }
 
-            //extract settings file
+            //start extract settings file
 
             if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config"))
             {
@@ -180,6 +182,34 @@ namespace BackupV2
 
             //end extract settings file
 
+
+            //start extract save.vbs
+
+            if (OS == "NET")
+            {
+                FileInfo FI = new FileInfo(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs");
+
+                if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs"))
+                {
+                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.saveall.vbs");
+                    FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs", FileMode.CreateNew);
+                    for (int i = 0; i < stream.Length; i++)
+                        fileStream.WriteByte((byte)stream.ReadByte());
+                    fileStream.Close();
+                }
+                else if (FI.CreationTime < DateTime.Now.AddDays(-5))
+                {
+                    File.Delete(Environment.GetEnvironmentVariable("appdata") + "\\returnzork\\save.vbs");
+                    FI.Delete();
+                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.saveall.vbs");
+                    FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs", FileMode.CreateNew);
+                    for (int i = 0; i < stream.Length; i++)
+                        fileStream.WriteByte((byte)stream.ReadByte());
+                    fileStream.Close();
+                }
+            }
+
+            //end extract save.vbs
 
 
 
@@ -283,34 +313,6 @@ namespace BackupV2
 
         private void FormCLOSED(object sender, FormClosingEventArgs FC)
         {
-            //extract the save world file before exiting
-
-            if (OS == "NET")
-            {
-                FileInfo FI = new FileInfo(Environment.GetEnvironmentVariable("TEMP") + "new.vbs");
-
-                if (!File.Exists(Environment.GetEnvironmentVariable("TEMP") + "\\new.vbs"))
-                {
-                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.saveall.vbs");
-                    FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("TEMP") + "\\new.vbs", FileMode.CreateNew);
-                    for (int i = 0; i < stream.Length; i++)
-                        fileStream.WriteByte((byte)stream.ReadByte());
-                    fileStream.Close();
-                }
-                else if (FI.CreationTime < DateTime.Now.AddDays(-5))
-                {
-                    File.Delete(Environment.GetEnvironmentVariable("TEMP") + "\\new.vbs");
-                    FI.Delete();
-                    Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.saveall.vbs");
-                    FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("TEMP") + "\\new.vbs", FileMode.CreateNew);
-                    for (int i = 0; i < stream.Length; i++)
-                        fileStream.WriteByte((byte)stream.ReadByte());
-                    fileStream.Close();
-                }
-            }
-
-            //end extract save world file
-
             switch (FC.CloseReason)
             {
                 case CloseReason.WindowsShutDown:
