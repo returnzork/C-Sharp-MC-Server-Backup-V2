@@ -295,12 +295,28 @@ namespace BackupV2
 
                 if (Directory.Exists(DirTo))
                 {
-                    FileSystem.CopyDirectory(DirFrom, DirTo +  DateNTime + "\\");
+                    if (DirFrom == "FTP")
+                    {
+                        Ftp_Download FTP = new Ftp_Download();
+                        FTP.main();
+                    }
+                    else
+                    {
+                        FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                    }
                 }
                 else if (!Directory.Exists(DirTo))
                 {
                     Directory.CreateDirectory(DirTo);
-                    FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                    if (DirFrom == "FTP")
+                    {
+                        Ftp_Download FTP = new Ftp_Download();
+                        FTP.main();
+                    }
+                    else
+                    {
+                        FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                    }
                 }
                 else
                 {
@@ -396,10 +412,8 @@ namespace BackupV2
         private void timer1_Tick(object sender, EventArgs e)
         {
             dec = dec + 0.0167M;
-            Math.Round(dec);
-            Console.WriteLine(dec);
             
-            if (dec >= MAX)
+            if (dec >= MAX + 0.001M)
             {
                 WaitTimer.Stop();
             }

@@ -17,7 +17,7 @@ namespace BackupV2
     public partial class Options : Form
     {
         XmlDocument xd = new XmlDocument();
-        XmlNode node1, node2, node3, node4, node5, node6;
+        XmlNode node1, node2, node3, node4, node5, node6, node7;
         ToolTip TT = new ToolTip();
 
         public Options()
@@ -33,11 +33,13 @@ namespace BackupV2
 
         private void Options_Load(object sender, EventArgs e)
         {
+#if RELEASE
             ftpusage.Enabled = false;
             ftpDeXpand.Visible = false;
             ftpDeXpand.Enabled = false;
-
-            FtpExpand.Enabled = false;
+#endif
+            FtpExpand.Enabled = true;
+            ftpDeXpand.Visible = false;
 
 
 
@@ -63,9 +65,11 @@ namespace BackupV2
             string ftpUser = XML.GetFtpUser();
             string ftpPass = XML.GetFtpPass();
             string ftpServer = XML.GetFtpServer();
+            string ftpFolder = XML.GetFtpFolder();
             ftpUserText.Text = ftpUser;
             ftpPassText.Text = ftpPass;
             ftpServerText.Text = ftpServer;
+            ftpFolderText.Text = ftpFolder;
 
             //end ftp loading
 
@@ -122,12 +126,10 @@ namespace BackupV2
                 node6.InnerText = "no";
             }
 
+            node7 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpFolder']");
+            node7.InnerText = ftpFolderText.Text;
+
             xd.Save(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
-        }
-
-        private void ftpusage_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void FtpExpand_Click(object sender, EventArgs e)
