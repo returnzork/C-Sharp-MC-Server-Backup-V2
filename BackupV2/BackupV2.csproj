@@ -159,7 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Cloud.ico" />
-    <Content Include="Version.txt" />
+    <EmbeddedResource Include="Cloud update.ico" />
+    <EmbeddedResource Include="Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

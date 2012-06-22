@@ -41,6 +41,19 @@ namespace BackupV2
 
 
 
+
+            if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt"))
+            {
+                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Version.txt");
+                FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt", FileMode.CreateNew);
+                for (int i = 0; i < stream.Length; i++)
+                    fileStream.WriteByte((byte)stream.ReadByte());
+                fileStream.Close();
+            }
+
+
+
+
             Type Mono = Type.GetType("Mono.Runtime");
 #if DEBUG
             if (Mono != null)
@@ -80,12 +93,29 @@ namespace BackupV2
             //End Application Icon
 
 
+            //Start check for updates
+
+            CheckForUpdates Updater = new CheckForUpdates();
+            string Available = Updater.Compare();
+
+            //End check for updates
+
+
+
             //Start Close2Tray
 
 
             if (OS == "NET")
             {
-                Tray.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud.ico"));  //get the icon from the resources
+                if(Available == "yes")
+                {
+                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud_Update.ico"));
+                }
+                else
+                {
+                    Tray.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud.ico"));  //get the icon from the resources
+                }
+
                 Tray.Visible = false;
                 Tray.Text = "Minecraft Server Backup";
                 this.Resize += new EventHandler(Form_Resize);
@@ -116,25 +146,29 @@ namespace BackupV2
         private void CheckForUpdate(Object sender, EventArgs e)
         {
             CheckForUpdates UPDATE = new CheckForUpdates();
-            UPDATE.CheckForUpdate();
+            string Available = UPDATE.Compare();
+            if (Available == "yes")
+            {
+                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Cloud_Update.ico"));
+            }
         }
 
         private void SaveWorld_CLICK(Object sender, EventArgs e)
         {
-            if(!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs"))
+            if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs"))
             {
-            }
-            try
-            {
-                p.Start();
-            }
-            catch (Exception ex)
-            {
-                FileStream fs = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Error.log",FileMode.Append, FileAccess.Write);
-                StreamWriter sw = new StreamWriter(fs);
-                sw.Write(DateTime.Now.ToString() + ex.ToString() + "            ");
-                sw.Close();
-                fs.Close();
+                try
+                {
+                    p.Start();
+                }
+                catch (Exception ex)
+                {
+                    FileStream fs = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Error.log", FileMode.Append, FileAccess.Write);
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.Write(DateTime.Now.ToString() + ex.ToString() + "            ");
+                    sw.Close();
+                    fs.Close();
+                }
             }
         }
 
@@ -164,6 +198,7 @@ namespace BackupV2
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if(!Directory.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork"))
             {
                 Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork");
             }
@@ -172,7 +207,6 @@ namespace BackupV2
 
             if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config"))
             {
-
                 Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Settings.config");
                 FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config", FileMode.CreateNew);
                 for (int i = 0; i < stream.Length; i++)

@@ -16,12 +16,18 @@ namespace BackupV2
         {
             throw new Exception("Not implemented yet");
 
-            webClient.DownloadFile("FROM", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");
+
             Compare();
         }
 
-        public void Compare()
+        public string Compare()
         {
+            throw new Exception("Not implemented yet");
+
+
+            webClient.DownloadFile("FROM", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");
+
+            string UpdateAvailable;
             int file1byte;
             int file2byte;
             FileStream fs1;
@@ -49,23 +55,35 @@ namespace BackupV2
             fs2.Close();
             if ((file1byte - file2byte) == 0)
             {
-                //MessageBox.Show("SAME");
+                UpdateAvailable = "no match";
+                MessageBox.Show("No update found");
+                return UpdateAvailable;
             }
             else
             {
-                //MessageBox.Show("DIFF");
-                GetExe();
-                string AppPath = Application.ExecutablePath;
-                string Update = AppPath + ".update\\";
-
-                if(!Directory.Exists(Update))
+                DialogResult UpdateFound = MessageBox.Show("Update found. Would you like to download?", "Update?", MessageBoxButtons.YesNo);
+                if (UpdateFound == DialogResult.Yes)
                 {
-                    Directory.CreateDirectory(Update);
+                    GetExe();
+                    string AppPath = Application.ExecutablePath;
+                    string Update = AppPath + ".update\\";
+
+                    if (!Directory.Exists(Update))
+                    {
+                        Directory.CreateDirectory(Update);
+                    }
+                    File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe", Update + "BackupV2.exe");
+                    File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
+                    File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
+                    MessageBox.Show("Update downloaded. Please copy the file from: " + Update);
+                    UpdateAvailable = "no";
+                    return UpdateAvailable;
                 }
-                File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe", Update + "BackupV2.exe");
-                File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
-                File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
-                MessageBox.Show("Update downloaded. Please copy the file from: " + Update);
+                else
+                {
+                    UpdateAvailable = "yes";
+                    return UpdateAvailable;
+                }
             }
         }
 
