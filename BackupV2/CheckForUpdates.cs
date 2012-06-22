@@ -55,17 +55,17 @@ namespace BackupV2
             {
                 //MessageBox.Show("DIFF");
                 GetExe();
-                string test = Application.ExecutablePath;
-                string newww = test + ".update\\";
+                string AppPath = Application.ExecutablePath;
+                string Update = AppPath + ".update\\";
 
-                if(!Directory.Exists(newww))
+                if(!Directory.Exists(Update))
                 {
-                    Directory.CreateDirectory(newww);
+                    Directory.CreateDirectory(Update);
                 }
-                File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe", newww + "BackupV2.exe");
+                File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe", Update + "BackupV2.exe");
                 File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
                 File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
-                MessageBox.Show("Update downloaded. Please copy the file from: " + newww);
+                MessageBox.Show("Update downloaded. Please copy the file from: " + Update);
             }
         }
 
