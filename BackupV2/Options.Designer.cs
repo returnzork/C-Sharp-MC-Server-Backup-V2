@@ -142,9 +142,9 @@
             // 
             // WarningTextBox
             // 
-            this.WarningTextBox.Location = new System.Drawing.Point(352, 236);
+            this.WarningTextBox.Location = new System.Drawing.Point(590, 5);
             this.WarningTextBox.Name = "WarningTextBox";
-            this.WarningTextBox.Size = new System.Drawing.Size(157, 70);
+            this.WarningTextBox.Size = new System.Drawing.Size(114, 57);
             this.WarningTextBox.TabIndex = 10;
             this.WarningTextBox.Text = "!!WARNING!!\nFTP user and pass is stored as plain text!!";
             // 
@@ -209,15 +209,15 @@
             // 
             // FtpUsageHelpTextbox
             // 
-            this.FtpUsageHelpTextbox.Location = new System.Drawing.Point(515, 236);
+            this.FtpUsageHelpTextbox.Location = new System.Drawing.Point(372, 195);
             this.FtpUsageHelpTextbox.Name = "FtpUsageHelpTextbox";
-            this.FtpUsageHelpTextbox.Size = new System.Drawing.Size(172, 70);
+            this.FtpUsageHelpTextbox.Size = new System.Drawing.Size(87, 111);
             this.FtpUsageHelpTextbox.TabIndex = 18;
             this.FtpUsageHelpTextbox.Text = "How to use:\nIn \'World Folder\' type in:\nFTP\nin ALL CAPS.";
             // 
             // ServerTextBox
             // 
-            this.ServerTextBox.Location = new System.Drawing.Point(369, 112);
+            this.ServerTextBox.Location = new System.Drawing.Point(372, 112);
             this.ServerTextBox.Name = "ServerTextBox";
             this.ServerTextBox.Size = new System.Drawing.Size(90, 77);
             this.ServerTextBox.TabIndex = 19;
@@ -227,7 +227,7 @@
             // 
             this.ftpFolderText.Location = new System.Drawing.Point(478, 86);
             this.ftpFolderText.Name = "ftpFolderText";
-            this.ftpFolderText.Size = new System.Drawing.Size(82, 20);
+            this.ftpFolderText.Size = new System.Drawing.Size(106, 20);
             this.ftpFolderText.TabIndex = 20;
             // 
             // FtpFolderLabel
@@ -241,15 +241,15 @@
             // 
             // ftpFolder2Text
             // 
-            this.ftpFolder2Text.Location = new System.Drawing.Point(572, 86);
+            this.ftpFolder2Text.Location = new System.Drawing.Point(596, 86);
             this.ftpFolder2Text.Name = "ftpFolder2Text";
-            this.ftpFolder2Text.Size = new System.Drawing.Size(100, 20);
+            this.ftpFolder2Text.Size = new System.Drawing.Size(123, 20);
             this.ftpFolder2Text.TabIndex = 22;
             // 
             // Folder2Label
             // 
             this.Folder2Label.AutoSize = true;
-            this.Folder2Label.Location = new System.Drawing.Point(569, 67);
+            this.Folder2Label.Location = new System.Drawing.Point(593, 67);
             this.Folder2Label.Name = "Folder2Label";
             this.Folder2Label.Size = new System.Drawing.Size(45, 13);
             this.Folder2Label.TabIndex = 23;
@@ -267,7 +267,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(560, 89);
+            this.label1.Location = new System.Drawing.Point(584, 89);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(12, 13);
             this.label1.TabIndex = 25;
@@ -275,9 +275,9 @@
             // 
             // FolderTextbox
             // 
-            this.FolderTextbox.Location = new System.Drawing.Point(478, 112);
+            this.FolderTextbox.Location = new System.Drawing.Point(468, 112);
             this.FolderTextbox.Name = "FolderTextbox";
-            this.FolderTextbox.Size = new System.Drawing.Size(209, 118);
+            this.FolderTextbox.Size = new System.Drawing.Size(251, 191);
             this.FolderTextbox.TabIndex = 26;
             this.FolderTextbox.Text = resources.GetString("FolderTextbox.Text");
             // 
@@ -294,7 +294,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(686, 312);
+            this.ClientSize = new System.Drawing.Size(731, 312);
             this.Controls.Add(this.FtpLabel);
             this.Controls.Add(this.FolderTextbox);
             this.Controls.Add(this.label1);

@@ -143,7 +143,7 @@ namespace BackupV2
 
         private void FtpExpand_Click(object sender, EventArgs e)
         {
-            this.Size = new Size(700, 350);
+            this.Size = new Size(750, 350);
             FtpExpand.Visible = false;
             FtpExpand.Enabled = false;
 
