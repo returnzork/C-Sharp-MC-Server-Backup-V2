@@ -278,10 +278,6 @@ namespace BackupV2
                 zip.AddDirectory(DirTo + DateNTime);
                 zip.Save(DirTo + DateNTime + ".zip");
             }
-            catch (DirectoryNotFoundException ex)
-            {
-                Log.MakeLog(ex.ToString());
-            }
             catch (Exception ex)
             {
                 Log.MakeLog(ex.ToString());
@@ -290,7 +286,6 @@ namespace BackupV2
 
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
-
             string FROM = XmlReader.GetWorld();
             string TO = XmlReader.GetBackupTo();
             string Compression = XmlReader.UseCompression();
