@@ -43,10 +43,12 @@ namespace BackupV2
 
         public Backup()
         {
+
             InitializeComponent();
 
             Folder2 = XmlReader.GetFtpFolder2();
 
+            UpdateLabel.Visible = false;
 
             if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt"))
             {
@@ -98,7 +100,7 @@ namespace BackupV2
 
             //End Application Icon
 
-
+            string Available;
             //Start check for updates
 #if DEBUG
             CheckForUpdate(null, null);
