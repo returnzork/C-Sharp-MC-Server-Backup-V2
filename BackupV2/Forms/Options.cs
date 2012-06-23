@@ -17,7 +17,7 @@ namespace BackupV2
     public partial class Options : Form
     {
         XmlDocument xd = new XmlDocument();
-        XmlNode node1, node2, node3, node4, node5, node6, node7, node8;
+        XmlNode node1, node2, node3, node4, node5, node6, node7, node8, node9;
         ToolTip TT = new ToolTip();
 
         public Options()
@@ -47,14 +47,15 @@ namespace BackupV2
 
 
 
-            //start load world folder
+            //start textbox loading
 
             Xml_Reader XML = new Xml_Reader();
             string World = XML.GetWorld();
             BackupFrom.Text = World;
+            string BackupTime = XML.GetBackupTime();
+            BackuptimeText.Text = BackupTime;
 
-            //end load world folder
-
+            //end textbox loading
 
             //start load Backup To folder
 
@@ -88,6 +89,7 @@ namespace BackupV2
                 UseCompression.Checked = true;
             }
             Console.WriteLine("Loaded");
+
             //end checkbox configuration
 
         }
@@ -137,6 +139,9 @@ namespace BackupV2
 
             node8 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpFolder2']");
             node8.InnerText = ftpFolder2Text.Text;
+
+            node9 = xd.SelectSingleNode("descendant::*[name(.) = 'timeBetween']");
+            node9.InnerText = BackuptimeText.Text;
 
             xd.Save(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
         }

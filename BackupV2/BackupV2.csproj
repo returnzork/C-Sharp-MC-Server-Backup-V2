@@ -160,13 +160,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icons\Cloud.ico" />
-    <EmbeddedResource Include="Icons\Cloud update.ico" />
     <EmbeddedResource Include="Text Files\Version.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Ionic.Zip.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\CloudUpdate.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

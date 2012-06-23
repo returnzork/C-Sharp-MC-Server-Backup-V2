@@ -36,7 +36,6 @@ namespace BackupV2
         string DirFrom;
         string DateNTime;
         string VALUE;
-        int VALUE2;
         string OS;
 
         NotifyIcon Tray = new NotifyIcon();  //creates the Tray icon
@@ -101,9 +100,11 @@ namespace BackupV2
 
 
             //Start check for updates
-
-            CheckForUpdates Updater = new CheckForUpdates();
-            string Available = null/* = Updater.Compare()*/;
+#if DEBUG
+            CheckForUpdate(null, null);
+#else
+            Available = null;
+#endif
 
             //End check for updates
 
@@ -114,23 +115,14 @@ namespace BackupV2
 
             if (OS == "NET")
             {
-                if(Available == "yes")
-                {
-                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud_Update.ico"));
-                }
-                else
-                {
-                    Tray.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));  //get the icon from the resources
-                }
-
                 Tray.Visible = false;
                 Tray.Text = "Minecraft Server Backup";
                 this.Resize += new EventHandler(Form_Resize);
                 Tray.MouseDoubleClick += new MouseEventHandler(Tray_MouseDoubleClick);
 
-                menu.MenuItems.Add("Quit",new System.EventHandler(QUIT_Click));
                 menu.MenuItems.Add("Save World", new EventHandler(SaveWorld_CLICK));
                 menu.MenuItems.Add("Check for updates", new EventHandler(CheckForUpdate));
+                menu.MenuItems.Add("Quit", new System.EventHandler(QUIT_Click));
                 Tray.ContextMenu = menu;
             }
 
@@ -156,7 +148,16 @@ namespace BackupV2
             string Available = UPDATE.Compare();
             if (Available == "yes")
             {
-                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud_Update.ico"));
+                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico"));
+                Bitmap bmp = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico")).ToBitmap();
+                Bitmap bmp2 = new Bitmap(bmp, 64, 64);
+                updatePictureBox.Image = bmp2;
+                UpdateLabel.Visible = true;
+            }
+            else
+            {
+                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
+                UpdateLabel.Visible = false;
             }
         }
 
@@ -257,7 +258,6 @@ namespace BackupV2
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            //progressBar1.Value = 0;
             CountdownThread.CancelAsync();
         }
 
@@ -297,8 +297,7 @@ namespace BackupV2
 
             //variable assignment, supports modifying locations without restart//
 
-            VALUE = CountdownTime.Text;
-            VALUE2 = Convert.ToInt32(VALUE);
+            VALUE = XmlReader.GetBackupTime();
             MAX = Convert.ToDecimal(VALUE);
             
             
@@ -478,10 +477,9 @@ namespace BackupV2
             }
         }
 
-        private void CountdownProgress(object sender, ProgressChangedEventArgs e)
+        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int Val = Convert.ToInt32(e);
-            progressBar1.Value = Val;
+            //new EventHandler CheckForUpdate();
         }
     }
 }

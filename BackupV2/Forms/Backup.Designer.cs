@@ -29,28 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.CountdownTime = new System.Windows.Forms.TextBox();
             this.CompressionBackground = new System.ComponentModel.BackgroundWorker();
             this.StartButton = new System.Windows.Forms.Button();
             this.CountdownThread = new System.ComponentModel.BackgroundWorker();
-            this.Label3 = new System.Windows.Forms.Label();
             this.Cancel = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveWorldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WaitTimer = new System.Windows.Forms.Timer(this.components);
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.updatePictureBox = new System.Windows.Forms.PictureBox();
+            this.UpdateLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updatePictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // CountdownTime
-            // 
-            this.CountdownTime.Location = new System.Drawing.Point(155, 85);
-            this.CountdownTime.Name = "CountdownTime";
-            this.CountdownTime.Size = new System.Drawing.Size(109, 20);
-            this.CountdownTime.TabIndex = 2;
             // 
             // CompressionBackground
             // 
@@ -60,7 +54,7 @@
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(12, 141);
+            this.StartButton.Location = new System.Drawing.Point(82, 53);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(103, 38);
             this.StartButton.TabIndex = 3;
@@ -72,20 +66,10 @@
             // 
             this.CountdownThread.WorkerSupportsCancellation = true;
             this.CountdownThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CountdownThread_DoWork);
-            this.CountdownThread.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.CountdownProgress);
-            // 
-            // Label3
-            // 
-            this.Label3.AutoSize = true;
-            this.Label3.Location = new System.Drawing.Point(152, 58);
-            this.Label3.Name = "Label3";
-            this.Label3.Size = new System.Drawing.Size(77, 13);
-            this.Label3.TabIndex = 10;
-            this.Label3.Text = "Time between:";
             // 
             // Cancel
             // 
-            this.Cancel.Location = new System.Drawing.Point(315, 141);
+            this.Cancel.Location = new System.Drawing.Point(203, 53);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(103, 38);
             this.Cancel.TabIndex = 11;
@@ -99,7 +83,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(430, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(318, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -107,6 +91,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveWorldToolStripMenuItem,
+            this.checkForUpdateToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.quitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -116,21 +101,28 @@
             // saveWorldToolStripMenuItem
             // 
             this.saveWorldToolStripMenuItem.Name = "saveWorldToolStripMenuItem";
-            this.saveWorldToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.saveWorldToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.saveWorldToolStripMenuItem.Text = "Save World";
             this.saveWorldToolStripMenuItem.Click += new System.EventHandler(this.saveWorldToolStripMenuItem_Click);
+            // 
+            // checkForUpdateToolStripMenuItem
+            // 
+            this.checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
+            this.checkForUpdateToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.checkForUpdateToolStripMenuItem.Text = "Check for update";
+            this.checkForUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdateToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -139,24 +131,34 @@
             this.WaitTimer.Interval = 1000;
             this.WaitTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // progressBar1
+            // updatePictureBox
             // 
-            this.progressBar1.Location = new System.Drawing.Point(133, 141);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(165, 38);
-            this.progressBar1.TabIndex = 13;
+            this.updatePictureBox.BackColor = System.Drawing.SystemColors.Control;
+            this.updatePictureBox.Location = new System.Drawing.Point(12, 27);
+            this.updatePictureBox.Name = "updatePictureBox";
+            this.updatePictureBox.Size = new System.Drawing.Size(64, 64);
+            this.updatePictureBox.TabIndex = 13;
+            this.updatePictureBox.TabStop = false;
+            // 
+            // UpdateLabel
+            // 
+            this.UpdateLabel.AutoSize = true;
+            this.UpdateLabel.Location = new System.Drawing.Point(82, 27);
+            this.UpdateLabel.Name = "UpdateLabel";
+            this.UpdateLabel.Size = new System.Drawing.Size(87, 13);
+            this.UpdateLabel.TabIndex = 14;
+            this.UpdateLabel.Text = "Update available";
             // 
             // Backup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(430, 200);
-            this.Controls.Add(this.progressBar1);
+            this.ClientSize = new System.Drawing.Size(318, 98);
+            this.Controls.Add(this.UpdateLabel);
+            this.Controls.Add(this.updatePictureBox);
             this.Controls.Add(this.Cancel);
-            this.Controls.Add(this.Label3);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.StartButton);
-            this.Controls.Add(this.CountdownTime);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Backup";
             this.Text = "Minecraft Server Backup";
@@ -164,6 +166,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updatePictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,11 +174,9 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox CountdownTime;
         private System.ComponentModel.BackgroundWorker CompressionBackground;
         private System.Windows.Forms.Button StartButton;
         private System.ComponentModel.BackgroundWorker CountdownThread;
-        private System.Windows.Forms.Label Label3;
         private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -183,7 +184,9 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.Timer WaitTimer;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdateToolStripMenuItem;
+        private System.Windows.Forms.PictureBox updatePictureBox;
+        private System.Windows.Forms.Label UpdateLabel;
     }
 }
 

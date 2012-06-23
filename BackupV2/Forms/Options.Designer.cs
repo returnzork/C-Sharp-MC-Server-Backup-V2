@@ -56,6 +56,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.FolderTextbox = new System.Windows.Forms.RichTextBox();
             this.FtpLabel = new System.Windows.Forms.Label();
+            this.TimeBetweenLabel = new System.Windows.Forms.Label();
+            this.BackuptimeText = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // SettingsFolder
@@ -72,7 +74,7 @@
             // 
             this.BackupFrom.Location = new System.Drawing.Point(12, 229);
             this.BackupFrom.Name = "BackupFrom";
-            this.BackupFrom.Size = new System.Drawing.Size(132, 20);
+            this.BackupFrom.Size = new System.Drawing.Size(140, 20);
             this.BackupFrom.TabIndex = 2;
             // 
             // BackupTo
@@ -102,9 +104,9 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(70, 268);
+            this.SaveButton.Location = new System.Drawing.Point(175, 265);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(177, 35);
+            this.SaveButton.Size = new System.Drawing.Size(132, 41);
             this.SaveButton.TabIndex = 6;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -290,11 +292,29 @@
             this.FtpLabel.TabIndex = 27;
             this.FtpLabel.Text = "ftp://";
             // 
+            // TimeBetweenLabel
+            // 
+            this.TimeBetweenLabel.AutoSize = true;
+            this.TimeBetweenLabel.Location = new System.Drawing.Point(12, 265);
+            this.TimeBetweenLabel.Name = "TimeBetweenLabel";
+            this.TimeBetweenLabel.Size = new System.Drawing.Size(121, 13);
+            this.TimeBetweenLabel.TabIndex = 29;
+            this.TimeBetweenLabel.Text = "Time between backups:";
+            // 
+            // BackuptimeText
+            // 
+            this.BackuptimeText.Location = new System.Drawing.Point(12, 283);
+            this.BackuptimeText.Name = "BackuptimeText";
+            this.BackuptimeText.Size = new System.Drawing.Size(140, 20);
+            this.BackuptimeText.TabIndex = 28;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(731, 312);
+            this.Controls.Add(this.TimeBetweenLabel);
+            this.Controls.Add(this.BackuptimeText);
             this.Controls.Add(this.FtpLabel);
             this.Controls.Add(this.FolderTextbox);
             this.Controls.Add(this.label1);
@@ -359,5 +379,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox FolderTextbox;
         private System.Windows.Forms.Label FtpLabel;
+        private System.Windows.Forms.Label TimeBetweenLabel;
+        private System.Windows.Forms.TextBox BackuptimeText;
     }
 }

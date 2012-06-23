@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace BackupV2
 {
@@ -15,8 +16,6 @@ namespace BackupV2
         public void CheckForUpdate()
         {
             throw new Exception("Not implemented yet");
-
-
             Compare();
         }
 
@@ -25,7 +24,7 @@ namespace BackupV2
             throw new Exception("Not implemented yet");
 
 
-            webClient.DownloadFile("FROM", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");
+            webClient.DownloadFile("C:\\ver.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");
 
             string UpdateAvailable;
             int file1byte;
@@ -44,52 +43,117 @@ namespace BackupV2
                 fs2.Close();
             }
 
-            do
+            try
             {
-                file1byte = fs1.ReadByte();
-                file2byte = fs2.ReadByte();
-            }
-            while ((file1byte == file2byte) && (file1byte != -1));
-
-            fs1.Close();
-            fs2.Close();
-            if ((file1byte - file2byte) == 0)
-            {
-                UpdateAvailable = "no match";
-                MessageBox.Show("No update found");
-                return UpdateAvailable;
-            }
-            else
-            {
-                DialogResult UpdateFound = MessageBox.Show("Update found. Would you like to download?", "Update?", MessageBoxButtons.YesNo);
-                if (UpdateFound == DialogResult.Yes)
+                do
                 {
-                    GetExe();
-                    string AppPath = Application.ExecutablePath;
-                    string Update = AppPath + ".update\\";
+                    file1byte = fs1.ReadByte();
+                    file2byte = fs2.ReadByte();
+                }
+                while ((file1byte == file2byte) && (file1byte != -1));
 
-                    if (!Directory.Exists(Update))
-                    {
-                        Directory.CreateDirectory(Update);
-                    }
-                    File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe", Update + "BackupV2.exe");
-                    File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
-                    File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
-                    MessageBox.Show("Update downloaded. Please copy the file from: " + Update);
-                    UpdateAvailable = "no";
+
+                fs1.Close();
+                fs2.Close();
+                if ((file1byte - file2byte) == 0)
+                {
+                    UpdateAvailable = "no match";
+                    MessageBox.Show("No update found");
                     return UpdateAvailable;
                 }
                 else
                 {
-                    UpdateAvailable = "yes";
-                    return UpdateAvailable;
+                    DialogResult UpdateFound = MessageBox.Show("Update found. Would you like to download?", "Update?", MessageBoxButtons.YesNo);
+                    if (UpdateFound == DialogResult.Yes)
+                    {
+                        GetExe();
+                        string AppPath = Application.ExecutablePath;
+                        string Update = AppPath + ".update\\";
+
+                        if (!Directory.Exists(Update))
+                        {
+                            Directory.CreateDirectory(Update);
+                        }
+                        if (File.Exists(Update + "BackupV2.exe"))
+                        {
+                            File.Delete(Update + "BackupV2.exe");
+                        }
+                        File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe", Update + "BackupV2.exe");
+                        File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
+                        File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\version.txt");
+                        MessageBox.Show("Update downloaded. Please copy the file from: " + Update);
+                        UpdateAvailable = "no";
+                        return UpdateAvailable;
+                    }
+                    else
+                    {
+                        UpdateAvailable = "yes";
+                        return UpdateAvailable;
+                    }
                 }
             }
+            catch (ObjectDisposedException)
+            {
+
+                GetVersion();
+
+                file1 = Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt";
+
+
+                FileStream fs = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\supertempVersion.txt", FileMode.Append, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.Close();
+                fs.Close();
+
+                file2 = Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\supertempVersion.txt";
+                
+
+                
+                fs1 = new FileStream(file1, FileMode.Open);
+                fs2 = new FileStream(file2, FileMode.Open);
+
+                do
+                {
+                    file1byte = fs1.ReadByte();
+                    file2byte = fs2.ReadByte();
+                }
+                while ((file1byte == file2byte) && (file1byte != -1));
+
+
+                fs1.Close();
+                fs2.Close();
+                if ((file1byte - file2byte) == 0)
+                {
+                    File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\supertempVersion.txt");
+                }
+                else
+                {
+                    File.Delete(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt");
+                    File.Move(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\supertempVersion.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt");
+                    MessageBox.Show("Please reopen the application and choose yes to download the update, or choose no to prompt to update at a later date.");
+                }
+
+
+
+            }
+            return null;
         }
 
         public void GetExe()
         {
-            webClient2.DownloadFile("FROM", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe");
+            webClient2.DownloadFile("C:\\BackupV2.exe", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe");
+        }
+
+        public void GetVersion()
+        {
+            if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\supertempVersion.txt"))
+            {
+                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Text_Files.Version.txt");
+                FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\supertempVersion.txt", FileMode.CreateNew);
+                for (int i = 0; i < stream.Length; i++)
+                    fileStream.WriteByte((byte)stream.ReadByte());
+                fileStream.Close();
+            }
         }
     }
 }
