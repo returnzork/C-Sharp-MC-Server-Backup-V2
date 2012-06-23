@@ -103,7 +103,13 @@ namespace BackupV2
             string Available;
             //Start check for updates
 #if DEBUG
-            CheckForUpdate(null, null);
+            try
+            {
+                CheckForUpdate(null, null);
+            }
+            catch
+            {
+            }
 #else
             Available = null;
 #endif
