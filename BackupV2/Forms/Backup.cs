@@ -23,6 +23,9 @@ namespace BackupV2
         string Folder2;
 
 
+        Error_Logging Log = new Error_Logging();
+
+
         ContextMenu menu = new ContextMenu();
         decimal dec = 0.00M;
         decimal MAX = 0.00M;
@@ -167,11 +170,7 @@ namespace BackupV2
                 }
                 catch (Exception ex)
                 {
-                    FileStream fs = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Error.log", FileMode.Append, FileAccess.Write);
-                    StreamWriter sw = new StreamWriter(fs);
-                    sw.Write(DateTime.Now.ToString() + ex.ToString() + "            ");
-                    sw.Close();
-                    fs.Close();
+                    Log.MakeLog(ex.ToString());
                 }
             }
         }
@@ -268,12 +267,15 @@ namespace BackupV2
 
             try
             {
-                zip.AddDirectory(DirTo + DateNTime); //debug make sure it works
+                zip.AddDirectory(DirTo + DateNTime);
                 zip.Save(DirTo + DateNTime + ".zip");
             }
             catch (DirectoryNotFoundException ex)
             {
-                Error_Logging Log = new Error_Logging();
+                Log.MakeLog(ex.ToString());
+            }
+            catch (Exception ex)
+            {
                 Log.MakeLog(ex.ToString());
             }
         }
