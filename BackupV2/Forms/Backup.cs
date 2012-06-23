@@ -46,6 +46,27 @@ namespace BackupV2
 
             InitializeComponent();
 
+
+            if (!Directory.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork"))
+            {
+                Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork");
+            }
+
+            //start extract settings file
+
+            if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config"))
+            {
+                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Text_Files.Settings.config");
+                FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config", FileMode.CreateNew);
+                for (int i = 0; i < stream.Length; i++)
+                    fileStream.WriteByte((byte)stream.ReadByte());
+                fileStream.Close();
+            }
+
+            //end extract settings file
+
+
+
             Folder2 = XmlReader.GetFtpFolder2();
 
             UpdateLabel.Visible = false;
@@ -210,25 +231,6 @@ namespace BackupV2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if(!Directory.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork"))
-            {
-                Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork");
-            }
-
-            //start extract settings file
-
-            if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config"))
-            {
-                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BackupV2.Text_Files.Settings.config");
-                FileStream fileStream = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config", FileMode.CreateNew);
-                for (int i = 0; i < stream.Length; i++)
-                    fileStream.WriteByte((byte)stream.ReadByte());
-                fileStream.Close();
-            }
-
-            //end extract settings file
-
-
             //start extract save.vbs
 
             if (OS == "NET")
@@ -267,6 +269,7 @@ namespace BackupV2
         private void Cancel_Click(object sender, EventArgs e)
         {
             CountdownThread.CancelAsync();
+            WaitTimer.Stop();
         }
 
         private void CompressionBackground_DoWork(object sender, DoWorkEventArgs e)
@@ -286,103 +289,104 @@ namespace BackupV2
 
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            string FROM = XmlReader.GetWorld();
-            string TO = XmlReader.GetBackupTo();
-            string Compression = XmlReader.UseCompression();
-
-
-            if (dec != 0.00M)  //reset value when thread runs//
+            while (!CountdownThread.CancellationPending)
             {
-                dec = 0.00M;
-            }
+                string FROM = XmlReader.GetWorld();
+                string TO = XmlReader.GetBackupTo();
+                string Compression = XmlReader.UseCompression();
 
 
-
-            //variable assignment, supports modifying locations without restart//
-
-            VALUE = XmlReader.GetBackupTime();
-            MAX = Convert.ToDecimal(VALUE);
-            
-            
-
-            DirFrom = FROM;
-            DirTo = TO;
-
-            if (!DirFrom.EndsWith("\\") && DirFrom != "FTP")
-            {
-                DirFrom = DirFrom + "\\";
-            }
-            if (!DirTo.EndsWith("\\"))
-            {
-                DirTo = DirTo + "\\";
-            }
-
-            //end variable assignment//
-            
-
-            while (dec < MAX && !CountdownThread.CancellationPending)  //Checks the time left is less than the total time, AND that the countdownthread does not have a cancellation pending.//
-            {
-                //do nothing//
-            }
-
-            if (!CountdownThread.CancellationPending)
-            {
-                DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
-
-                if (Directory.Exists(DirTo))
+                if (dec != 0.00M)  //reset value wh\en thread runs//
                 {
-                    if (!Directory.Exists(DirTo + DateNTime))
+                    dec = 0.00M;
+                }
+
+
+                //variable assignment, supports modifying locations without restart//
+
+                VALUE = XmlReader.GetBackupTime();
+                MAX = Convert.ToDecimal(VALUE);
+
+
+
+                DirFrom = FROM;
+                DirTo = TO;
+
+                if (!DirFrom.EndsWith("\\") && DirFrom != "FTP")
+                {
+                    DirFrom = DirFrom + "\\";
+                }
+                if (!DirTo.EndsWith("\\"))
+                {
+                    DirTo = DirTo + "\\";
+                }
+
+                //end variable assignment//
+
+
+                while (dec < MAX && !CountdownThread.CancellationPending)  //Checks the time left is less than the total time, AND that the countdownthread does not have a cancellation pending.//
+                {
+                    //do nothing//
+                }
+
+                if (!CountdownThread.CancellationPending)
+                {
+                    DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
+
+                    if (Directory.Exists(DirTo))
                     {
-                        Directory.CreateDirectory(DirTo + DateNTime);
-                    }
-                    if (DirFrom == "FTP")
-                    {
-                        Ftp_Download FTP = new Ftp_Download();
-                        FTP.main(DateNTime);
-                        if (Compression == "yes")
+                        if (!Directory.Exists(DirTo + DateNTime))
                         {
-                            CompressionBackground.RunWorkerAsync();
+                            Directory.CreateDirectory(DirTo + DateNTime);
+                        }
+                        if (DirFrom == "FTP")
+                        {
+                            Ftp_Download FTP = new Ftp_Download();
+                            FTP.main(DateNTime);
+                            if (Compression == "yes")
+                            {
+                                CompressionBackground.RunWorkerAsync();
+                            }
+                        }
+                        else
+                        {
+                            FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                            if (Compression == "yes")
+                            {
+                                CompressionBackground.RunWorkerAsync();
+                            }
+                        }
+                    }
+                    else if (!Directory.Exists(DirTo))
+                    {
+                        Directory.CreateDirectory(DirTo);
+                        if (DirFrom == "FTP")
+                        {
+                            Ftp_Download FTP = new Ftp_Download();
+                            FTP.main(DateNTime);
+                            if (Compression == "yes")
+                            {
+                                CompressionBackground.RunWorkerAsync();
+                            }
+                        }
+                        else
+                        {
+                            FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                            if (Compression == "yes")
+                            {
+                                CompressionBackground.RunWorkerAsync();
+                            }
+
                         }
                     }
                     else
                     {
-                        FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
-                        if(Compression == "yes")
-                        {
-                            CompressionBackground.RunWorkerAsync();
-                        }
+                        //Error//
+                        MessageBox.Show("ERROR");
                     }
-                }
-                else if (!Directory.Exists(DirTo))
-                {
-                    Directory.CreateDirectory(DirTo);
-                    if (DirFrom == "FTP")
-                    {
-                        Ftp_Download FTP = new Ftp_Download();
-                        FTP.main(DateNTime);
-                        if (Compression == "yes")
-                        {
-                            CompressionBackground.RunWorkerAsync();
-                        }
-                    }
-                    else
-                    {
-                        FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
-                        if (Compression == "yes")
-                        {
-                            CompressionBackground.RunWorkerAsync();
-                        }
-                        
-                    }
-                }
-                else
-                {
-                    //Error//
-                    MessageBox.Show("ERROR");
                 }
             }
         }
-
 
         private void FormCLOSED(object sender, FormClosingEventArgs FC)
         {

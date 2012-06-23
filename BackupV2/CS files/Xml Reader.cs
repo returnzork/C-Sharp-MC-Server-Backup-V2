@@ -74,7 +74,7 @@ namespace BackupV2
         {
             xd.Load(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
             node9 = xd.SelectSingleNode("descendant::*[name(.) = 'timeBetween']");
-            return node9.ToString();
+            return node9.InnerText.ToString();
         }
     }
 }
