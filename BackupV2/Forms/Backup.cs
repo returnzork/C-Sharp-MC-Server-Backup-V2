@@ -19,10 +19,14 @@ namespace BackupV2
 {
     public partial class Backup : Form
     {
+        Xml_Reader XmlReader = new Xml_Reader();
+        string Folder2;
+
+
         ContextMenu menu = new ContextMenu();
         decimal dec = 0.00M;
         decimal MAX = 0.00M;
-
+        
         Process p = new Process(); //creates the save world process
 
         string DirTo;
@@ -39,7 +43,7 @@ namespace BackupV2
         {
             InitializeComponent();
 
-
+            Folder2 = XmlReader.GetFtpFolder2();
 
 
             if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Version.txt"))
@@ -244,9 +248,6 @@ namespace BackupV2
             }
 
             //end extract save.vbs
-
-
-
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -263,40 +264,26 @@ namespace BackupV2
 
         private void CompressionBackground_DoWork(object sender, DoWorkEventArgs e)
         {
+            ZipFile zip = new ZipFile();
 
-            DateNTime = DateTime.Now.Month.ToString();
-            DateNTime = DateNTime + "-" + DateTime.Now.Day.ToString();
-            DateNTime = DateNTime + "-" + DateTime.Now.Hour.ToString();
-            DateNTime = DateNTime + "-" + DateTime.Now.Minute.ToString();
-
-
-            MessageBox.Show(DirTo);
-
-
-            if (!Directory.Exists(DirTo))
+            try
             {
-                if (!DirTo.EndsWith("\\"))
-                {
-                    DirTo = DirTo + "\\";
-                }
-                Directory.CreateDirectory(DirTo);
+                zip.AddDirectory(DirTo + DateNTime); //debug make sure it works
+                zip.Save(DirTo + DateNTime + ".zip");
             }
-
-
-
-            //System.IO.Directory.CreateDirectory(CopyTo + Date);
-
-
-
-            CompressionBackground.CancelAsync();
-
+            catch (DirectoryNotFoundException ex)
+            {
+                Error_Logging Log = new Error_Logging();
+                Log.MakeLog(ex.ToString());
+            }
         }
 
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            Xml_Reader XmlReader = new Xml_Reader();
+
             string FROM = XmlReader.GetWorld();
             string TO = XmlReader.GetBackupTo();
+            string Compression = XmlReader.UseCompression();
 
 
             if (dec != 0.00M)  //reset value when thread runs//
@@ -348,10 +335,18 @@ namespace BackupV2
                     {
                         Ftp_Download FTP = new Ftp_Download();
                         FTP.main(DateNTime);
+                        if (Compression == "yes")
+                        {
+                            CompressionBackground.RunWorkerAsync();
+                        }
                     }
                     else
                     {
                         FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                        if(Compression == "yes")
+                        {
+                            CompressionBackground.RunWorkerAsync();
+                        }
                     }
                 }
                 else if (!Directory.Exists(DirTo))
@@ -361,10 +356,19 @@ namespace BackupV2
                     {
                         Ftp_Download FTP = new Ftp_Download();
                         FTP.main(DateNTime);
+                        if (Compression == "yes")
+                        {
+                            CompressionBackground.RunWorkerAsync();
+                        }
                     }
                     else
                     {
                         FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
+                        if (Compression == "yes")
+                        {
+                            CompressionBackground.RunWorkerAsync();
+                        }
+                        
                     }
                 }
                 else
