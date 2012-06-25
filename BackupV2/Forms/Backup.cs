@@ -309,7 +309,6 @@ namespace BackupV2
                 MAX = Convert.ToDecimal(VALUE);
 
 
-
                 DirFrom = FROM;
                 DirTo = TO;
 
@@ -325,13 +324,12 @@ namespace BackupV2
                 //end variable assignment//
 
 
-                while (dec < MAX && !CountdownThread.CancellationPending)  //Checks the time left is less than the total time, AND that the countdownthread does not have a cancellation pending.//
+                while (dec < MAX)  //Checks the time left is less than the total time
                 {
                     //do nothing//
                 }
 
-                if (!CountdownThread.CancellationPending)
-                {
+
                     DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
 
                     if (Directory.Exists(DirTo))
@@ -340,6 +338,7 @@ namespace BackupV2
                         {
                             Directory.CreateDirectory(DirTo + DateNTime);
                         }
+
                         if (DirFrom == "FTP")
                         {
                             Ftp_Download FTP = new Ftp_Download();
@@ -377,7 +376,6 @@ namespace BackupV2
                             {
                                 CompressionBackground.RunWorkerAsync();
                             }
-
                         }
                     }
                     else
@@ -385,7 +383,6 @@ namespace BackupV2
                         //Error//
                         MessageBox.Show("ERROR");
                     }
-                }
             }
         }
 
