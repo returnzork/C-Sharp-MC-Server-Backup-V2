@@ -44,6 +44,8 @@ namespace BackupV2
             InitializeComponent();
 
 
+            StopButton.Enabled = false;
+
             if (!Directory.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork"))
             {
                 Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork");
@@ -201,7 +203,6 @@ namespace BackupV2
             this.Close();
         }
 
-
         void Tray_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Tray.Visible = false;
@@ -209,8 +210,6 @@ namespace BackupV2
             this.WindowState = FormWindowState.Normal;
         }
         
-
-
         void Form_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -255,12 +254,19 @@ namespace BackupV2
         {
             WaitTimer.Start();
             CountdownThread.RunWorkerAsync();
+            StartButton.Enabled = false;
+            StopButton.Enabled = true;
         }
 
-        private void Cancel_Click(object sender, EventArgs e)
+        private void StopButton_Click(object sender, EventArgs e)
         {
             CountdownThread.CancelAsync();
             WaitTimer.Stop();
+            StopButton.Enabled = false;
+            if (CountdownThread.IsBusy)
+            {
+                StartButton.Enabled = true;
+            }
         }
 
         private void CompressionBackground_DoWork(object sender, DoWorkEventArgs e)
@@ -314,11 +320,10 @@ namespace BackupV2
                 //end variable assignment//
 
 
-                while (dec < MAX)  //Checks the time left is less than the total time
+                while (dec < MAX && !CountdownThread.CancellationPending)  //Checks the time left is less than the total time
                 {
                     //do nothing//
                 }
-
 
                     DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
 

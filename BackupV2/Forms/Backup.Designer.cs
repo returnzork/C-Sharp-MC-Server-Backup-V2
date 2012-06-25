@@ -32,7 +32,7 @@
             this.CompressionBackground = new System.ComponentModel.BackgroundWorker();
             this.StartButton = new System.Windows.Forms.Button();
             this.CountdownThread = new System.ComponentModel.BackgroundWorker();
-            this.Cancel = new System.Windows.Forms.Button();
+            this.StopButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveWorldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,15 +67,15 @@
             this.CountdownThread.WorkerSupportsCancellation = true;
             this.CountdownThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CountdownThread_DoWork);
             // 
-            // Cancel
+            // StopButton
             // 
-            this.Cancel.Location = new System.Drawing.Point(203, 53);
-            this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(103, 38);
-            this.Cancel.TabIndex = 11;
-            this.Cancel.Text = "Cancel";
-            this.Cancel.UseVisualStyleBackColor = true;
-            this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
+            this.StopButton.Location = new System.Drawing.Point(203, 53);
+            this.StopButton.Name = "StopButton";
+            this.StopButton.Size = new System.Drawing.Size(103, 38);
+            this.StopButton.TabIndex = 11;
+            this.StopButton.Text = "Cancel";
+            this.StopButton.UseVisualStyleBackColor = true;
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // menuStrip1
             // 
@@ -156,7 +156,7 @@
             this.ClientSize = new System.Drawing.Size(318, 98);
             this.Controls.Add(this.UpdateLabel);
             this.Controls.Add(this.updatePictureBox);
-            this.Controls.Add(this.Cancel);
+            this.Controls.Add(this.StopButton);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.StartButton);
             this.MainMenuStrip = this.menuStrip1;
@@ -177,7 +177,7 @@
         private System.ComponentModel.BackgroundWorker CompressionBackground;
         private System.Windows.Forms.Button StartButton;
         private System.ComponentModel.BackgroundWorker CountdownThread;
-        private System.Windows.Forms.Button Cancel;
+        private System.Windows.Forms.Button StopButton;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveWorldToolStripMenuItem;
