@@ -15,13 +15,13 @@ namespace BackupV2
         WebClient webClient2 = new WebClient();
         public void CheckForUpdate()
         {
-            throw new Exception("Not implemented yet");
+            throw new NotImplementedException("Not implemented yet");
             Compare();
         }
 
         public string Compare()
         {
-            throw new Exception("Not implemented yet");
+            throw new NotImplementedException("Not implemented yet");
 
 
             webClient.DownloadFile("C:\\ver.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");

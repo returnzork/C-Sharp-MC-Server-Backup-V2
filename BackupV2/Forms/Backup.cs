@@ -22,9 +22,7 @@ namespace BackupV2
         Xml_Reader XmlReader = new Xml_Reader();
         string Folder2;
 
-
         Error_Logging Log = new Error_Logging();
-
 
         ContextMenu menu = new ContextMenu();
         decimal dec = 0.00M;
@@ -121,18 +119,9 @@ namespace BackupV2
 
             //End Application Icon
 
-            string Available;
             //Start check for updates
 #if DEBUG
-            try
-            {
                 CheckForUpdate(null, null);
-            }
-            catch
-            {
-            }
-#else
-            Available = null;
 #endif
 
             //End check for updates
@@ -174,19 +163,31 @@ namespace BackupV2
         private void CheckForUpdate(Object sender, EventArgs e)
         {
             CheckForUpdates UPDATE = new CheckForUpdates();
-            string Available = UPDATE.Compare();
-            if (Available == "yes")
+            try
             {
-                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico"));
-                Bitmap bmp = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico")).ToBitmap();
-                Bitmap bmp2 = new Bitmap(bmp, 64, 64);
-                updatePictureBox.Image = bmp2;
-                UpdateLabel.Visible = true;
+                string Available = UPDATE.Compare();
+                if (Available == "yes")
+                {
+                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico"));
+                    Bitmap bmp = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico")).ToBitmap();
+                    Bitmap bmp2 = new Bitmap(bmp, 64, 64);
+                    updatePictureBox.Image = bmp2;
+                    UpdateLabel.Visible = true;
+                }
+                else
+                {
+                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
+                    UpdateLabel.Visible = false;
+                }
             }
-            else
+            catch (NotImplementedException)
             {
                 Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
                 UpdateLabel.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                Log.MakeLog(ex.ToString());
             }
         }
 
@@ -296,7 +297,7 @@ namespace BackupV2
                 string Compression = XmlReader.UseCompression();
 
 
-                if (dec != 0.00M)  //reset value wh\en thread runs//
+                if (dec != 0.00M)  //reset value when thread runs//
                 {
                     dec = 0.00M;
                 }
