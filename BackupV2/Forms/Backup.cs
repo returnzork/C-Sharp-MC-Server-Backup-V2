@@ -185,16 +185,22 @@ namespace BackupV2
 
         private void SaveWorld_CLICK(Object sender, EventArgs e)
         {
-            if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs"))
+            string FROM = XmlReader.GetWorld();
+            if (File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs"))
             {
-                try
+                if (FROM != "FTP")
                 {
-                    p.Start();
+                    try
+                    {
+                        p.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.MakeLog(ex.ToString());
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Log.MakeLog(ex.ToString());
-                }
+                else
+                    MessageBox.Show("Cannot backup world when backing up from FTP.");
             }
         }
 
@@ -481,7 +487,15 @@ namespace BackupV2
 
         private void saveWorldToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            p.Start();
+            string FROM = XmlReader.GetWorld();
+            if (FROM != "FTP")
+            {
+                p.Start();
+            }
+            else
+            {
+                MessageBox.Show("Cannot backup world when backing up from FTP.");
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
