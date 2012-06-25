@@ -166,14 +166,15 @@ namespace BackupV2
             FtpExpand.Visible = true;
         }
 
-        private void BackupTimeBetweenKeyPress(object sender, KeyPressEventArgs e)
+        private void BackupTimeBetweenKeyDown(object sender, KeyEventArgs e)
         {
-            if (char.IsLetter(e.KeyChar) ||
-                char.IsSymbol(e.KeyChar) ||
-                char.IsWhiteSpace(e.KeyChar) ||
-                char.IsPunctuation(e.KeyChar))
-                e.Handled = true;
-
+            if (e.KeyValue >= 96 && e.KeyValue <= 105 || e.KeyValue >= 48 && e.KeyValue <= 57 || e.KeyValue == 8)
+            { }
+            else
+            {
+                e.SuppressKeyPress = true;
+                TT.Show("Please enter a number between 0 and 9.", BackuptimeText);
+            }
         }
     }
 }

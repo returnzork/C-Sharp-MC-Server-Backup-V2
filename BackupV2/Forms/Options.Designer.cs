@@ -306,7 +306,7 @@
             this.BackuptimeText.Name = "BackuptimeText";
             this.BackuptimeText.Size = new System.Drawing.Size(140, 20);
             this.BackuptimeText.TabIndex = 28;
-            this.BackuptimeText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BackupTimeBetweenKeyPress);
+            this.BackuptimeText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BackupTimeBetweenKeyDown);
             // 
             // Options
             // 
