@@ -20,6 +20,7 @@ namespace BackupV2
         XmlNode node1, node2, node3, node4, node5, node6, node7, node8, node9;
         ToolTip TT = new ToolTip();
 
+
         public Options()
         {
             
@@ -91,7 +92,6 @@ namespace BackupV2
             Console.WriteLine("Loaded");
 
             //end checkbox configuration
-
         }
 
         private void SettingsFolder_Click(object sender, EventArgs e)
@@ -164,6 +164,16 @@ namespace BackupV2
 
             FtpExpand.Enabled = true;
             FtpExpand.Visible = true;
+        }
+
+        private void BackupTimeBetweenKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsLetter(e.KeyChar) ||
+                char.IsSymbol(e.KeyChar) ||
+                char.IsWhiteSpace(e.KeyChar) ||
+                char.IsPunctuation(e.KeyChar))
+                e.Handled = true;
+
         }
     }
 }

@@ -156,7 +156,6 @@
             this.ftpUserText.Name = "ftpUserText";
             this.ftpUserText.Size = new System.Drawing.Size(100, 20);
             this.ftpUserText.TabIndex = 11;
-            this.ftpUserText.Text = "test";
             // 
             // ftpPassText
             // 
@@ -211,9 +210,9 @@
             // 
             // FtpUsageHelpTextbox
             // 
-            this.FtpUsageHelpTextbox.Location = new System.Drawing.Point(372, 195);
+            this.FtpUsageHelpTextbox.Location = new System.Drawing.Point(372, 198);
             this.FtpUsageHelpTextbox.Name = "FtpUsageHelpTextbox";
-            this.FtpUsageHelpTextbox.Size = new System.Drawing.Size(87, 111);
+            this.FtpUsageHelpTextbox.Size = new System.Drawing.Size(87, 108);
             this.FtpUsageHelpTextbox.TabIndex = 18;
             this.FtpUsageHelpTextbox.Text = "How to use:\nIn \'World Folder\' type in:\nFTP\nin ALL CAPS.";
             // 
@@ -221,7 +220,7 @@
             // 
             this.ServerTextBox.Location = new System.Drawing.Point(372, 112);
             this.ServerTextBox.Name = "ServerTextBox";
-            this.ServerTextBox.Size = new System.Drawing.Size(90, 77);
+            this.ServerTextBox.Size = new System.Drawing.Size(87, 80);
             this.ServerTextBox.TabIndex = 19;
             this.ServerTextBox.Text = "For \'Server\'\nType in the IP/Hostname ONLY";
             // 
@@ -307,6 +306,7 @@
             this.BackuptimeText.Name = "BackuptimeText";
             this.BackuptimeText.Size = new System.Drawing.Size(140, 20);
             this.BackuptimeText.TabIndex = 28;
+            this.BackuptimeText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BackupTimeBetweenKeyPress);
             // 
             // Options
             // 
