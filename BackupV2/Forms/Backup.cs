@@ -19,24 +19,23 @@ namespace BackupV2
 {
     public partial class Backup : Form
     {
-        Xml_Reader XmlReader = new Xml_Reader();
-        string Folder2;
-
+        NotifyIcon Tray = new NotifyIcon();
+        Process p = new Process();
         Error_Logging Log = new Error_Logging();
-
+        Xml_Reader XmlReader = new Xml_Reader();
         ContextMenu menu = new ContextMenu();
+
+
         decimal dec = 0.00M;
         decimal MAX = 0.00M;
         
-        Process p = new Process(); //creates the save world process
 
         string DirTo;
         string DirFrom;
         string DateNTime;
         string VALUE;
         string OS;
-
-        NotifyIcon Tray = new NotifyIcon();  //creates the Tray icon
+        string Folder2;
 
 
         public Backup()
@@ -64,6 +63,7 @@ namespace BackupV2
             //end extract settings file
 
 
+            //start extract version file
 
             Folder2 = XmlReader.GetFtpFolder2();
 
@@ -78,25 +78,13 @@ namespace BackupV2
                 fileStream.Close();
             }
 
-
-
-
-            Type Mono = Type.GetType("Mono.Runtime");
-#if DEBUG
-            if (Mono != null)
-            {
-                MessageBox.Show("MONO");
-            }
-            else
-            {
-                MessageBox.Show("NOT MONO");
-            }
-#endif
+            //end extract version file
 
 
             //Start operating system check
-            
-            
+
+            Type Mono = Type.GetType("Mono.Runtime");
+
             if (Mono != null)  //if not null it is mono//
             {
                 OS = "MONO";
@@ -122,6 +110,8 @@ namespace BackupV2
             //Start check for updates
 #if DEBUG
                 CheckForUpdate(null, null);
+#else
+            //TODO
 #endif
 
             //End check for updates
@@ -407,33 +397,54 @@ namespace BackupV2
                     DialogResult CLOSE;
                     if (OS == "NET")
                     {
-                        CLOSE = MessageBox.Show("Save world before closing?", "Save world?", MessageBoxButtons.YesNoCancel,MessageBoxIcon.Question);
-                        if (CLOSE == DialogResult.Yes)
+                        string FROM = XmlReader.GetWorld();
+                        if (FROM != "FTP")
                         {
-                            p.Start();
-                            FC.Cancel = false;
-                            Application.Exit();
-                            if (Tray.Visible == true)
+                            CLOSE = MessageBox.Show("Save world before closing?", "Save world?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                            if (CLOSE == DialogResult.Yes)
                             {
+                                p.Start();
+                                FC.Cancel = false;
                                 Tray.Dispose();
+                                p.WaitForExit();
+
+                                Application.Exit();
                             }
-                        }
-                        else if (CLOSE == DialogResult.No)
-                        {
-                            FC.Cancel = false;
-                            Application.Exit();
-                            if (Tray.Visible == true)
+                            else if (CLOSE == DialogResult.No)
                             {
-                                Tray.Dispose();
+                                FC.Cancel = false;
+                                Application.Exit();
+                                if (Tray.Visible == true)
+                                {
+                                    Tray.Dispose();
+                                }
                             }
-                        }
-                        else if (CLOSE == DialogResult.Cancel)
-                        {
-                            FC.Cancel = true;
+                            else if (CLOSE == DialogResult.Cancel)
+                            {
+                                FC.Cancel = true;
+                            }
+                            else
+                            {
+                                //error//
+                            }
                         }
                         else
                         {
-                            //error//
+                            CLOSE = MessageBox.Show("Realy quit?", "Quit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (CLOSE == DialogResult.Yes)
+                            {
+                                FC.Cancel = false;
+                                Tray.Dispose();
+                                Application.Exit();
+                            }
+                            else if(CLOSE == DialogResult.No)
+                            {
+                                FC.Cancel = true;
+                            }
+                            else
+                            {
+                                //error
+                            }
                         }
                     }
                     else
@@ -484,7 +495,7 @@ namespace BackupV2
 
         private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //new EventHandler CheckForUpdate();
+            CheckForUpdate(null, null);
         }
     }
 }
