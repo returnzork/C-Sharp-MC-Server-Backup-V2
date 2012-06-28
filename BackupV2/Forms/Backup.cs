@@ -156,6 +156,7 @@ namespace BackupV2
         }
 
         #region Updates
+
         private void CheckForUpdate(Object sender, EventArgs e)
         {
             CheckForUpdates UPDATE = new CheckForUpdates();
@@ -186,9 +187,11 @@ namespace BackupV2
                 Log.MakeLog(ex);
             }
         }
+
         #endregion
 
         #region Saveworld
+
         private void SaveWorld_CLICK(Object sender, EventArgs e)
         {
             string FROM = XmlReader.GetWorld();
@@ -206,25 +209,31 @@ namespace BackupV2
                 else
                     MessageBox.Show("Cannot backup world when backing up from FTP.");
             }
+
         #endregion
 
         #region Quit button click
+
         private void QUIT_Click(Object sender, EventArgs e)
         {
             this.Close();
         }
+
         #endregion
 
         #region Open from tray
+
         void Tray_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Tray.Visible = false;
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
+
         #endregion
 
         #region minimize to tray
+
         void Form_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -233,9 +242,11 @@ namespace BackupV2
                 Tray.Visible = true;
             }
         }
+
         #endregion
 
         #region Form load
+
         private void Form1_Load(object sender, EventArgs e)
         {
             #region extract save world vbs file
@@ -266,6 +277,7 @@ namespace BackupV2
 
             #endregion
         }
+
         #endregion
 
         #region Start button click
@@ -417,6 +429,7 @@ namespace BackupV2
         #endregion
 
         #region Compression thread
+
         private void CompressionBackground_DoWork(object sender, DoWorkEventArgs e)
         {
             ZipFile zip = new ZipFile();
@@ -431,9 +444,11 @@ namespace BackupV2
                 Log.MakeLog(ex);
             }
         }
+
         #endregion
 
         #region Form closing
+
         private void FormCLOSED(object sender, FormClosingEventArgs FC)
         {
             switch (FC.CloseReason)
@@ -521,13 +536,16 @@ namespace BackupV2
                     break;
             }
         }
+
         #endregion
 
         #region options toolstrip button click
+
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Options().ShowDialog();
         }
+
         #endregion
 
         #region toolstrip quit button click
@@ -538,6 +556,7 @@ namespace BackupV2
         #endregion
 
         #region save world toolstrip click
+
         private void saveWorldToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string FROM = XmlReader.GetWorld();
@@ -557,9 +576,11 @@ namespace BackupV2
                 MessageBox.Show("Cannot backup world when backing up from FTP.");
             }
         }
+
         #endregion
 
         #region timer
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             dec = dec + 0.0167M;
@@ -573,13 +594,16 @@ namespace BackupV2
                 WaitTimer.Stop();
             }
         }
+
         #endregion
 
         #region check for updates toolstrip click
+
         private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CheckForUpdate(null, null);
         }
+
         #endregion
     }
 }
