@@ -1,8 +1,14 @@
-Version 2.0 ALPHA of the backup program. MAY NOT WORK PROPERLY
+Version 2.0 R1
 
-todo
-copy world
-compression
+R1:
+Complete everything, testing still needed. Will work with minor errors.
 
-future todo:
-Proper FTP support
+
+ToDo:
+
+Test FTP more, and fine tune it so it is speedy.
+
+
+
+
+R = release
