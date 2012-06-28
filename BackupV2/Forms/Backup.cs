@@ -238,7 +238,7 @@ namespace BackupV2
         #region Form load
         private void Form1_Load(object sender, EventArgs e)
         {
-            //start extract save.vbs
+            #region extract save world vbs file
 
             if (OS == "NET")
             {
@@ -264,11 +264,12 @@ namespace BackupV2
                 }
             }
 
-            //end extract save.vbs
+            #endregion
         }
         #endregion
 
         #region Start button click
+
         private void StartButton_Click(object sender, EventArgs e)
         {
             WaitTimer.Start();
@@ -276,9 +277,11 @@ namespace BackupV2
             StartButton.Enabled = false;
             StopButton.Enabled = true;
         }
+
         #endregion
 
         #region stop button click
+
         private void StopButton_Click(object sender, EventArgs e)
         {
             CountdownThread.CancelAsync();
@@ -289,9 +292,11 @@ namespace BackupV2
                 StartButton.Enabled = true;
             }
         }
+
         #endregion
 
         #region Countdown thread
+
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
             while (!CountdownThread.CancellationPending)
@@ -306,8 +311,7 @@ namespace BackupV2
                     dec = 0.00M;
                 }
 
-
-                //variable assignment, supports modifying locations without restart//
+                #region assign variables
 
                 VALUE = XmlReader.GetBackupTime();
                 MAX = Convert.ToDecimal(VALUE);
@@ -315,6 +319,8 @@ namespace BackupV2
 
                 DirFrom = FROM;
                 DirTo = TO;
+
+
 
                 if (!DirFrom.EndsWith("\\") && DirFrom != "FTP")
                 {
@@ -325,8 +331,7 @@ namespace BackupV2
                     DirTo = DirTo + "\\";
                 }
 
-                //end variable assignment//
-
+                #endregion
 
                 while (dec < MAX && !CountdownThread.CancellationPending)  //Checks the time left is less than the total time
                 {
@@ -408,6 +413,7 @@ namespace BackupV2
                 }
             }
         }
+
         #endregion
 
         #region Compression thread
