@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.VisualBasic.FileIO;
 using System.Threading;
 using Ionic.Zip;
 using System.IO;
@@ -25,10 +24,13 @@ namespace BackupV2
         Xml_Reader XmlReader = new Xml_Reader();
         ContextMenu menu = new ContextMenu();
 
+        #region decimals
 
         decimal dec = 0.00M;
         decimal MAX = 0.00M;
-        
+
+        #endregion
+        #region strings
 
         string DirTo;
         string DirFrom;
@@ -37,12 +39,13 @@ namespace BackupV2
         string OS;
         string Folder2;
 
+        #endregion
+
 
         public Backup()
         {
 
             InitializeComponent();
-
 
             StopButton.Enabled = false;
 
@@ -152,6 +155,7 @@ namespace BackupV2
 
         }
 
+        #region Updates
         private void CheckForUpdate(Object sender, EventArgs e)
         {
             CheckForUpdates UPDATE = new CheckForUpdates();
@@ -182,7 +186,9 @@ namespace BackupV2
                 Log.MakeLog(ex.ToString());
             }
         }
+        #endregion
 
+        #region Saveworld
         private void SaveWorld_CLICK(Object sender, EventArgs e)
         {
             string FROM = XmlReader.GetWorld();
@@ -200,19 +206,25 @@ namespace BackupV2
                 else
                     MessageBox.Show("Cannot backup world when backing up from FTP.");
             }
+        #endregion
 
+        #region Quit button click
         private void QUIT_Click(Object sender, EventArgs e)
         {
             this.Close();
         }
+        #endregion
 
+        #region Open from tray
         void Tray_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Tray.Visible = false;
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
-        
+        #endregion
+
+        #region minimize to tray
         void Form_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -221,7 +233,9 @@ namespace BackupV2
                 Tray.Visible = true;
             }
         }
+        #endregion
 
+        #region Form load
         private void Form1_Load(object sender, EventArgs e)
         {
             //start extract save.vbs
@@ -252,7 +266,9 @@ namespace BackupV2
 
             //end extract save.vbs
         }
+        #endregion
 
+        #region Start button click
         private void StartButton_Click(object sender, EventArgs e)
         {
             WaitTimer.Start();
@@ -260,7 +276,9 @@ namespace BackupV2
             StartButton.Enabled = false;
             StopButton.Enabled = true;
         }
+        #endregion
 
+        #region stop button click
         private void StopButton_Click(object sender, EventArgs e)
         {
             CountdownThread.CancelAsync();
@@ -271,22 +289,9 @@ namespace BackupV2
                 StartButton.Enabled = true;
             }
         }
+        #endregion
 
-        private void CompressionBackground_DoWork(object sender, DoWorkEventArgs e)
-        {
-            ZipFile zip = new ZipFile();
-
-            try
-            {
-                zip.AddDirectory(DirTo + DateNTime);
-                zip.Save(DirTo + DateNTime + ".zip");
-            }
-            catch (Exception ex)
-            {
-                Log.MakeLog(ex.ToString());
-            }
-        }
-
+        #region Countdown thread
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
             while (!CountdownThread.CancellationPending)
@@ -328,62 +333,101 @@ namespace BackupV2
                     //do nothing//
                 }
 
-                    DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
+                DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
 
-                    if (Directory.Exists(DirTo))
+                if (Directory.Exists(DirTo))
+                {
+                    if (!Directory.Exists(DirTo + DateNTime))  //create the directory for the current time if it does not exist
                     {
-                        if (!Directory.Exists(DirTo + DateNTime))
-                        {
-                            Directory.CreateDirectory(DirTo + DateNTime);
-                        }
+                        Directory.CreateDirectory(DirTo + DateNTime);
+                    }
 
-                        if (DirFrom == "FTP")
+                    if (DirFrom == "FTP")  //if the from directory is FTP, start FTP downloading
+                    {
+                        Ftp_Download FTP = new Ftp_Download();
+                        FTP.main(DateNTime);
+                        if (Compression == "yes")
                         {
-                            Ftp_Download FTP = new Ftp_Download();
-                            FTP.main(DateNTime);
-                            if (Compression == "yes")
-                            {
-                                CompressionBackground.RunWorkerAsync();
-                            }
-                        }
-                        else
-                        {
-                            FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
-                            if (Compression == "yes")
-                            {
-                                CompressionBackground.RunWorkerAsync();
-                            }
+                            CompressionBackground.RunWorkerAsync();
                         }
                     }
-                    else if (!Directory.Exists(DirTo))
+                    else if (DirFrom != "FTP")  //if the from directory is not FTP, copy the directory.
                     {
-                        Directory.CreateDirectory(DirTo);
-                        if (DirFrom == "FTP")
+                        foreach(string CreateDir in Directory.GetDirectories(DirFrom, "*", SearchOption.AllDirectories))
                         {
-                            Ftp_Download FTP = new Ftp_Download();
-                            FTP.main(DateNTime);
-                            if (Compression == "yes")
-                            {
-                                CompressionBackground.RunWorkerAsync();
-                            }
+                            Directory.CreateDirectory(CreateDir.Replace(DirFrom, DirTo + DateNTime + "\\"));  //create each sub directory
                         }
-                        else
+                        foreach (string file in Directory.GetFiles(DirFrom, "*", SearchOption.AllDirectories))
                         {
-                            FileSystem.CopyDirectory(DirFrom, DirTo + DateNTime + "\\");
-                            if (Compression == "yes")
-                            {
-                                CompressionBackground.RunWorkerAsync();
-                            }
+                            File.Copy(file, file.Replace(DirFrom, DirTo + DateNTime + "\\"));  //copy each file in sub directories, and in main directory
+                        }
+
+                        if (Compression == "yes")
+                        {
+                            CompressionBackground.RunWorkerAsync();
                         }
                     }
                     else
                     {
-                        //Error//
-                        MessageBox.Show("ERROR");
+                        //error
                     }
+                }
+                else if (!Directory.Exists(DirTo))
+                {
+                    Directory.CreateDirectory(DirTo);
+                    if (DirFrom == "FTP")
+                    {
+                        Ftp_Download FTP = new Ftp_Download();
+                        FTP.main(DateNTime);
+                        if (Compression == "yes")
+                        {
+                            CompressionBackground.RunWorkerAsync();
+                        }
+                    }
+                    else
+                    {
+                        foreach (string CreateDir in Directory.GetDirectories(DirFrom, "*", SearchOption.AllDirectories))
+                        {
+                            Directory.CreateDirectory(CreateDir.Replace(DirFrom, DirTo + DateNTime + "\\"));  //create each sub directory
+                        }
+                        foreach (string file in Directory.GetFiles(DirFrom, "*", SearchOption.AllDirectories))
+                        {
+                            File.Copy(file, file.Replace(DirFrom, DirTo + DateNTime + "\\"));  //copy each file in sub directories, and in main directory
+                        }
+
+                        if (Compression == "yes")
+                        {
+                            CompressionBackground.RunWorkerAsync();
+                        }
+                    }
+                }
+                else
+                {
+                    //Error//
+                    MessageBox.Show("ERROR");
+                }
             }
         }
+        #endregion
 
+        #region Compression thread
+        private void CompressionBackground_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ZipFile zip = new ZipFile();
+
+            try
+            {
+                zip.AddDirectory(DirTo + DateNTime);
+                zip.Save(DirTo + DateNTime + ".zip");
+            }
+            catch (Exception ex)
+            {
+                Log.MakeLog(ex.ToString());
+            }
+        }
+        #endregion
+
+        #region Form closing
         private void FormCLOSED(object sender, FormClosingEventArgs FC)
         {
             switch (FC.CloseReason)
@@ -471,17 +515,23 @@ namespace BackupV2
                     break;
             }
         }
+        #endregion
 
+        #region options toolstrip button click
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Options().ShowDialog();
         }
+        #endregion
 
+        #region toolstrip quit button click
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
+        #endregion
 
+        #region save world toolstrip click
         private void saveWorldToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string FROM = XmlReader.GetWorld();
@@ -501,7 +551,9 @@ namespace BackupV2
                 MessageBox.Show("Cannot backup world when backing up from FTP.");
             }
         }
+        #endregion
 
+        #region timer
         private void timer1_Tick(object sender, EventArgs e)
         {
             dec = dec + 0.0167M;
@@ -515,10 +567,13 @@ namespace BackupV2
                 WaitTimer.Stop();
             }
         }
+        #endregion
 
+        #region check for updates toolstrip click
         private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CheckForUpdate(null, null);
         }
+        #endregion
     }
 }

@@ -9,10 +9,10 @@ namespace BackupV2
 {
     public class Xml_Reader
     {
-
         XmlDocument xd = new XmlDocument();
         XmlNode node1, node2, node3, node4, node5, node6, node7, node8, node9;
 
+        #region get user settings from XML file
 
         public string GetWorld()
         {
@@ -76,5 +76,7 @@ namespace BackupV2
             node9 = xd.SelectSingleNode("descendant::*[name(.) = 'timeBetween']");
             return node9.InnerText.ToString();
         }
+
+        #endregion
     }
 }

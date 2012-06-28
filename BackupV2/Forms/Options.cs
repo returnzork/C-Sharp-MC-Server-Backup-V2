@@ -32,6 +32,8 @@ namespace BackupV2
             TT.SetToolTip(WorldToLabel, "Enter where you want your world backup to be located at");
         }
 
+        #region Form load
+
         private void Options_Load(object sender, EventArgs e)
         {
 #if DEBUG
@@ -46,9 +48,7 @@ namespace BackupV2
             FtpExpand.Visible = false;
 #endif
 
-
-
-            //start textbox loading
+            #region textbox loading
 
             Xml_Reader XML = new Xml_Reader();
             string World = XML.GetWorld();
@@ -56,17 +56,16 @@ namespace BackupV2
             string BackupTime = XML.GetBackupTime();
             BackuptimeText.Text = BackupTime;
 
-            //end textbox loading
+            #endregion
 
-            //start load Backup To folder
 
+            #region load Backup to folder
             string WorldTo = XML.GetBackupTo();
             BackupTo.Text = WorldTo;
+            #endregion
 
-            //end load Backup Tofolder
 
-
-            //start ftp loading
+            #region ftp loading
 
             string ftpUser = XML.GetFtpUser();
             string ftpPass = XML.GetFtpPass();
@@ -79,20 +78,23 @@ namespace BackupV2
             ftpFolderText.Text = ftpFolder;
             ftpFolder2Text.Text = ftpFolder2;
 
-            //end ftp loading
+            #endregion
 
 
-            //start load checkbox configuration
+            #region load checkbox config
 
             string Compression = XML.UseCompression();
             if (Compression == "yes")
             {
                 UseCompression.Checked = true;
             }
-            Console.WriteLine("Loaded");
 
-            //end checkbox configuration
+            #endregion
         }
+
+        #endregion
+
+        #region settings folder button click
 
         private void SettingsFolder_Click(object sender, EventArgs e)
         {
@@ -103,6 +105,10 @@ namespace BackupV2
             p.StartInfo = StartInfo;
             p.Start();
         }
+
+        #endregion
+
+        #region save button click
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
@@ -146,6 +152,10 @@ namespace BackupV2
             xd.Save(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
         }
 
+        #endregion
+
+        #region FtpExpand click
+
         private void FtpExpand_Click(object sender, EventArgs e)
         {
             this.Size = new Size(750, 350);
@@ -155,6 +165,10 @@ namespace BackupV2
             ftpDeXpand.Visible = true;
             ftpDeXpand.Enabled = true;
         }
+
+        #endregion
+
+        #region Ftp DeXpand click
 
         private void ftpDeXpand_Click(object sender, EventArgs e)
         {
@@ -166,6 +180,10 @@ namespace BackupV2
             FtpExpand.Visible = true;
         }
 
+        #endregion 
+
+        #region Allow only numbers in backup time
+
         private void BackupTimeBetweenKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyValue >= 96 && e.KeyValue <= 105 || e.KeyValue >= 48 && e.KeyValue <= 57 || e.KeyValue == 8)
@@ -176,5 +194,7 @@ namespace BackupV2
                 TT.Show("Please enter a number between 0 and 9.", BackuptimeText);
             }
         }
+
+        #endregion
     }
 }

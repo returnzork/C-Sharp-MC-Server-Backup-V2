@@ -9,15 +9,20 @@ namespace BackupV2
 {
     public class Ftp_Download
     {
+        public Error_Logging log = new Error_Logging();
+        public Xml_Reader Read = new Xml_Reader();
+
         public void main(string DateNTime)
         {
-            Xml_Reader Read = new Xml_Reader();
+            #region string initialization
+
             string server = Read.GetFtpServer();
             string user = Read.GetFtpUser();
             string pass = Read.GetFtpPass();
             string folder = Read.GetFtpFolder();
-
             string[] files = GetFileList();
+
+            #endregion
 
             try
             {
@@ -28,26 +33,37 @@ namespace BackupV2
             }
             catch (Exception EX)
             {
-                Console.WriteLine(EX);
+                log.MakeLog(EX.ToString());
             }
         }
 
+        #region get FTP file list
+
         public static string[] GetFileList()
         {
+            Error_Logging log = new Error_Logging();
             Xml_Reader Read = new Xml_Reader();
+
+            #region string initialization
+
             string Server = Read.GetFtpServer();
             string User = Read.GetFtpUser();
             string Pass = Read.GetFtpPass();
             string Folder = Read.GetFtpFolder();
             string Folder2 = Read.GetFtpFolder2();
-
             string[] downloadFiles;
+
+            #endregion
+
+
             StringBuilder result = new StringBuilder();
             WebResponse responce = null;
             StreamReader reader = null;
             try
             {
                 FtpWebRequest reqFTP;
+                #region FTP details
+
                 reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + Server + "/" + Folder + "/" + Folder2));
                 reqFTP.UseBinary = true;
                 reqFTP.Credentials = new NetworkCredential(User, Pass);
@@ -56,6 +72,8 @@ namespace BackupV2
                 reqFTP.KeepAlive = false;
                 reqFTP.UsePassive = false;
                 responce = reqFTP.GetResponse();
+
+                #endregion
                 reader = new StreamReader(responce.GetResponseStream());
                 string line = reader.ReadLine();
                 while (line != null)
@@ -69,7 +87,9 @@ namespace BackupV2
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex);
+                log.MakeLog(ex.ToString());
+                #region cleanup
+
                 if (reader != null)
                 {
                     reader.Close();
@@ -80,18 +100,28 @@ namespace BackupV2
                 }
                 downloadFiles = null;
                 return downloadFiles;
+
+                #endregion
             }
         }
 
+        #endregion
+
+        #region Download from FTP
+
         private void Download(string file, string DateNTime)
         {
-            Xml_Reader Read = new Xml_Reader();
+            #region string initialization
+
             string Server = Read.GetFtpServer();
             string User = Read.GetFtpUser();
             string Pass = Read.GetFtpPass();
             string Folder = Read.GetFtpFolder();
             string Folder2 = Read.GetFtpFolder2();
             string LocalDirTo = Read.GetBackupTo();
+
+            #endregion
+
 
             if (!LocalDirTo.EndsWith("\\"))
             {
@@ -107,6 +137,9 @@ namespace BackupV2
                     return;
                 }
                 FtpWebRequest reqFTP;
+
+                #region FTP details
+
                 reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + Server + "/" + Folder + "/" + file));
                 reqFTP.Credentials = new NetworkCredential(User, Pass);
                 reqFTP.KeepAlive = false;
@@ -116,13 +149,23 @@ namespace BackupV2
                 reqFTP.UsePassive = false;
                 FtpWebResponse responce = (FtpWebResponse)reqFTP.GetResponse();
                 Stream responceStream = responce.GetResponseStream();
+
+                #endregion
+
                 if (!Directory.Exists(LocalDirTo + DateNTime + "\\" + Folder2))
                 {
                     Directory.CreateDirectory(LocalDirTo + DateNTime + "\\" + Folder2);
                 }
                 FileStream writeStream = new FileStream(LocalDirTo + DateNTime + "\\" + file, FileMode.Create);
 
+
+
+                
+                //TODO Test with actual server
+
+
                 int Length = 16; //tweaking this may give better performance, but when I was on 32 it gave tiny noise (playable but..) from a mp3 file, at 256 it was unplayable. Smaller value takes longer but yields nearly 1-1 ratio of size and quality.//
+
 
                 Byte[] buffer = new Byte[Length];
                 int bytesRead = responceStream.Read(buffer, 0, Length);
@@ -134,18 +177,24 @@ namespace BackupV2
                 writeStream.Close();
                 responce.Close();
             }
+            #region Catching errors
+
             catch (WebException wEx)
             {
-                Console.WriteLine(wEx);
+                log.MakeLog(wEx.ToString());
             }
             catch (AccessViolationException aEx)
             {
-                Console.WriteLine(aEx);
+                log.MakeLog(aEx.ToString());
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                log.MakeLog(ex.ToString());
             }
+
+            #endregion
         }
+
+        #endregion
     }
 }
