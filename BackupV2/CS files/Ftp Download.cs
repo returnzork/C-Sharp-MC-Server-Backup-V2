@@ -33,7 +33,7 @@ namespace BackupV2
             }
             catch (Exception EX)
             {
-                log.MakeLog(EX.ToString());
+                log.MakeLog(EX);
             }
         }
 
@@ -87,7 +87,7 @@ namespace BackupV2
             }
             catch(Exception ex)
             {
-                log.MakeLog(ex.ToString());
+                log.MakeLog(ex);
                 #region cleanup
 
                 if (reader != null)
@@ -181,15 +181,15 @@ namespace BackupV2
 
             catch (WebException wEx)
             {
-                log.MakeLog(wEx.ToString());
+                log.MakeLog(wEx);
             }
             catch (AccessViolationException aEx)
             {
-                log.MakeLog(aEx.ToString());
+                log.MakeLog(aEx);
             }
             catch (Exception ex)
             {
-                log.MakeLog(ex.ToString());
+                log.MakeLog(ex);
             }
 
             #endregion

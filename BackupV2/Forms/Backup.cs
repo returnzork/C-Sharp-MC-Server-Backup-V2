@@ -183,7 +183,7 @@ namespace BackupV2
             }
             catch (Exception ex)
             {
-                Log.MakeLog(ex.ToString());
+                Log.MakeLog(ex);
             }
         }
         #endregion
@@ -200,7 +200,7 @@ namespace BackupV2
                     }
                     catch (Exception ex)
                     {
-                        Log.MakeLog(ex.ToString());
+                        Log.MakeLog(ex);
                     }
                 }
                 else
@@ -428,7 +428,7 @@ namespace BackupV2
             }
             catch (Exception ex)
             {
-                Log.MakeLog(ex.ToString());
+                Log.MakeLog(ex);
             }
         }
         #endregion
@@ -549,7 +549,7 @@ namespace BackupV2
                 }
                 catch (Exception ex)
                 {
-                    Log.MakeLog(ex.ToString());
+                    Log.MakeLog(ex);
                 }
             }
             else
