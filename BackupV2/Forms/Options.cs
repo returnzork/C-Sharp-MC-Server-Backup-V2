@@ -10,7 +10,7 @@ namespace BackupV2
     public partial class Options : Form
     {
         XmlDocument xd = new XmlDocument();
-        XmlNode node1, node2, node3, node4, node5, node6, node7, node8, node9;
+        XmlNode node1, node2, node3, node4, node5, node6, node7, node8, node9, node10;
         ToolTip TT = new ToolTip();
 
 
@@ -82,6 +82,12 @@ namespace BackupV2
                 UseCompression.Checked = true;
             }
 
+            string Update = XML.GetUpdateSettings();
+            if (Update == "yes")
+            {
+                UpdatingCheckBox.Checked = true;
+            }
+
             #endregion
         }
 
@@ -123,6 +129,7 @@ namespace BackupV2
             node5 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpServer']");
             node5.InnerText = ftpServerText.Text;
 
+            #region compression node
             node6 = xd.SelectSingleNode("descendant::*[name(.) = 'compression']");
             if (UseCompression.Checked == true)
             {
@@ -132,6 +139,7 @@ namespace BackupV2
             {
                 node6.InnerText = "no";
             }
+            #endregion
 
             node7 = xd.SelectSingleNode("descendant::*[name(.) = 'ftpFolder']");
             node7.InnerText = ftpFolderText.Text;
@@ -141,6 +149,18 @@ namespace BackupV2
 
             node9 = xd.SelectSingleNode("descendant::*[name(.) = 'timeBetween']");
             node9.InnerText = BackuptimeText.Text;
+
+            #region update node
+            node10 = xd.SelectSingleNode("descendant::*[name(.) = 'Update']");
+            if (UpdatingCheckBox.Checked == true)
+            {
+                node10.InnerText = "yes";
+            }
+            else
+            {
+                node10.InnerText = "no";
+            }
+            #endregion
 
             xd.Save(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
         }

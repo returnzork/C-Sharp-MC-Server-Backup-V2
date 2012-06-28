@@ -6,7 +6,7 @@ namespace BackupV2
     public class Xml_Reader
     {
         XmlDocument xd = new XmlDocument();
-        XmlNode node1, node2, node3, node4, node5, node6, node7, node8, node9;
+        XmlNode node1, node2, node3, node4, node5, node6, node7, node8, node9, node10;
 
         #region get user settings from XML file
 
@@ -71,6 +71,13 @@ namespace BackupV2
             xd.Load(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
             node9 = xd.SelectSingleNode("descendant::*[name(.) = 'timeBetween']");
             return node9.InnerText.ToString();
+        }
+
+        public string GetUpdateSettings()
+        {
+            xd.Load(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config");
+            node10 = xd.SelectSingleNode("descendant::*[name(.) = 'Update']");
+            return node10.InnerText.ToString();
         }
 
         #endregion

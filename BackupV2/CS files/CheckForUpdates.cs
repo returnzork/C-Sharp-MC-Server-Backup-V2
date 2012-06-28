@@ -10,15 +10,26 @@ namespace BackupV2
     {
         WebClient webClient = new WebClient();
         WebClient webClient2 = new WebClient();
+        Error_Logging log = new Error_Logging();
+
 
         public string Compare()
         {
-#if !DEBUG
-            throw new NotImplementedException("Not implemented yet");
-#endif
-
             #region download version file
-            webClient.DownloadFile("C:\\ver.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");
+
+            try
+            {
+                webClient.DownloadFile("http://cloud.github.com/downloads/returnzork/C-Sharp-MC-Server-Backup-V2/Version.txt", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\versiontemp.txt");
+            }
+            catch (WebException ex)
+            {
+                log.MakeLog(ex);
+            }
+            catch (Exception ex)
+            {
+                log.MakeLog(ex);
+            }
+
             #endregion
 
             #region initialization

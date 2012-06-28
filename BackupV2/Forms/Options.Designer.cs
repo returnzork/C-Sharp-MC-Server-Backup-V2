@@ -58,6 +58,7 @@
             this.FtpLabel = new System.Windows.Forms.Label();
             this.TimeBetweenLabel = new System.Windows.Forms.Label();
             this.BackuptimeText = new System.Windows.Forms.TextBox();
+            this.UpdatingCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // SettingsFolder
@@ -308,11 +309,22 @@
             this.BackuptimeText.TabIndex = 28;
             this.BackuptimeText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BackupTimeBetweenKeyDown);
             // 
+            // UpdatingCheckBox
+            // 
+            this.UpdatingCheckBox.AutoSize = true;
+            this.UpdatingCheckBox.Location = new System.Drawing.Point(12, 112);
+            this.UpdatingCheckBox.Name = "UpdatingCheckBox";
+            this.UpdatingCheckBox.Size = new System.Drawing.Size(157, 17);
+            this.UpdatingCheckBox.TabIndex = 30;
+            this.UpdatingCheckBox.Text = "Check for updates on start?";
+            this.UpdatingCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(731, 312);
+            this.Controls.Add(this.UpdatingCheckBox);
             this.Controls.Add(this.TimeBetweenLabel);
             this.Controls.Add(this.BackuptimeText);
             this.Controls.Add(this.FtpLabel);
@@ -381,5 +393,6 @@
         private System.Windows.Forms.Label FtpLabel;
         private System.Windows.Forms.Label TimeBetweenLabel;
         private System.Windows.Forms.TextBox BackuptimeText;
+        private System.Windows.Forms.CheckBox UpdatingCheckBox;
     }
 }

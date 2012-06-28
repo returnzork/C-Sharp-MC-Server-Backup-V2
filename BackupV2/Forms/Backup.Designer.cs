@@ -42,6 +42,7 @@
             this.WaitTimer = new System.Windows.Forms.Timer(this.components);
             this.updatePictureBox = new System.Windows.Forms.PictureBox();
             this.UpdateLabel = new System.Windows.Forms.Label();
+            this.Check4UpdateThread = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updatePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -149,6 +150,10 @@
             this.UpdateLabel.TabIndex = 14;
             this.UpdateLabel.Text = "Update available";
             // 
+            // Check4UpdateThread
+            // 
+            this.Check4UpdateThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Check4UpdateThread_DoWork);
+            // 
             // Backup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -164,6 +169,7 @@
             this.Text = "Minecraft Server Backup";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormCLOSED);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updatePictureBox)).EndInit();
@@ -187,6 +193,7 @@
         private System.Windows.Forms.ToolStripMenuItem checkForUpdateToolStripMenuItem;
         private System.Windows.Forms.PictureBox updatePictureBox;
         private System.Windows.Forms.Label UpdateLabel;
+        private System.ComponentModel.BackgroundWorker Check4UpdateThread;
     }
 }
 

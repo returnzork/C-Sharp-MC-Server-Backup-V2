@@ -48,7 +48,7 @@ namespace BackupV2
                 Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork");
             }
 
-            //start extract settings file
+            #region extract settings
 
             if (!File.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Settings.config"))
             {
@@ -59,10 +59,9 @@ namespace BackupV2
                 fileStream.Close();
             }
 
-            //end extract settings file
+            #endregion
 
-
-            //start extract version file
+            #region extract version file
 
             Folder2 = XmlReader.GetFtpFolder2();
 
@@ -77,10 +76,9 @@ namespace BackupV2
                 fileStream.Close();
             }
 
-            //end extract version file
+            #endregion
 
-
-            //Start operating system check
+            #region check if using mono
 
             Type Mono = Type.GetType("Mono.Runtime");
 
@@ -91,34 +89,20 @@ namespace BackupV2
             else
             {
                 OS = "NET";
-            }            
+            }
 
+            #endregion
 
-            //End operating system check
-
-
-            //Start Application Icon
+            #region app icon
 
             if (OS == "NET")
             {
                 this.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
             }
 
-            //End Application Icon
+            #endregion
 
-            //Start check for updates
-#if DEBUG
-                CheckForUpdate(null, null);
-#else
-            //TODO
-#endif
-
-            //End check for updates
-
-
-
-            //Start Close2Tray
-
+            #region Close to Tray
 
             if (OS == "NET")
             {
@@ -133,111 +117,17 @@ namespace BackupV2
                 Tray.ContextMenu = menu;
             }
 
+            #endregion
 
-            //End Close2Tray
-
-
-            //Start Save world process
+            #region Save world process
 
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
             startInfo.FileName = Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\save.vbs";
             p.StartInfo = startInfo;
-
-            //End Save world
-
-
+            
+            #endregion
         }
-
-        #region Updates
-
-        private void CheckForUpdate(Object sender, EventArgs e)
-        {
-            CheckForUpdates UPDATE = new CheckForUpdates();
-            try
-            {
-                string Available = UPDATE.Compare();
-                if (Available == "yes")
-                {
-                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico"));
-                    Bitmap bmp = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico")).ToBitmap();
-                    Bitmap bmp2 = new Bitmap(bmp, 64, 64);
-                    updatePictureBox.Image = bmp2;
-                    UpdateLabel.Visible = true;
-                }
-                else
-                {
-                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
-                    UpdateLabel.Visible = false;
-                }
-            }
-            catch (NotImplementedException)
-            {
-                Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
-                UpdateLabel.Visible = false;
-            }
-            catch (Exception ex)
-            {
-                Log.MakeLog(ex);
-            }
-        }
-
-        #endregion
-
-        #region Saveworld
-
-        private void SaveWorld_CLICK(Object sender, EventArgs e)
-        {
-            string FROM = XmlReader.GetWorld();
-                if (FROM != "FTP")
-                {
-                    try
-                    {
-                        p.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.MakeLog(ex);
-                    }
-                }
-                else
-                    MessageBox.Show("Cannot backup world when backing up from FTP.");
-            }
-
-        #endregion
-
-        #region Quit button click
-
-        private void QUIT_Click(Object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        #endregion
-
-        #region Open from tray
-
-        void Tray_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            this.Tray.Visible = false;
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-        }
-
-        #endregion
-
-        #region minimize to tray
-
-        void Form_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                this.Hide();
-                Tray.Visible = true;
-            }
-        }
-
-        #endregion
 
         #region Form load
 
@@ -274,6 +164,91 @@ namespace BackupV2
 
         #endregion
 
+        #region Form Shown
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            Check4UpdateThread.RunWorkerAsync();
+        }
+
+        #endregion
+
+        #region Updates
+
+        private void CheckForUpdate(Object sender, EventArgs e)
+        {
+            CheckForUpdates UPDATE = new CheckForUpdates();
+            try
+            {
+                string Available = UPDATE.Compare();
+                if (Available == "yes")
+                {
+                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico"));
+                    Bitmap bmp = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico")).ToBitmap();
+                    Bitmap bmp2 = new Bitmap(bmp, 64, 64);
+                    updatePictureBox.Image = bmp2;
+                    UpdateLabel.Visible = true;
+                }
+                else
+                {
+                    Tray.Icon = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.Cloud.ico"));
+                    UpdateLabel.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.MakeLog(ex);
+            }
+        }
+
+        #endregion
+
+        #region Saveworld
+
+        private void SaveWorld_CLICK(Object sender, EventArgs e)
+        {
+            string FROM = XmlReader.GetWorld();
+                if (FROM != "FTP")
+                {
+                    try
+                    {
+                        p.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.MakeLog(ex);
+                    }
+                }
+                else
+                    MessageBox.Show("Cannot backup world when backing up from FTP.");
+            }
+
+        #endregion
+
+        #region Open from tray
+
+        void Tray_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Tray.Visible = false;
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        #endregion
+
+        #region minimize to tray
+
+        void Form_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+                Tray.Visible = true;
+            }
+        }
+
+        #endregion
+
         #region Start button click
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -300,6 +275,180 @@ namespace BackupV2
         }
 
         #endregion
+
+        #region Form closing
+
+        private void FormCLOSED(object sender, FormClosingEventArgs FC)
+        {
+            switch (FC.CloseReason)
+            {
+                case CloseReason.WindowsShutDown:
+                    try
+                    {
+                        p.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    Application.Exit();
+                    break;
+
+
+                case CloseReason.UserClosing:
+                    DialogResult CLOSE;
+                    if (OS == "NET")
+                    {
+                        string FROM = XmlReader.GetWorld();
+                        if (FROM != "FTP")
+                        {
+                            CLOSE = MessageBox.Show("Save world before closing?", "Save world?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                            if (CLOSE == DialogResult.Yes)
+                            {
+                                p.Start();
+                                FC.Cancel = false;
+                                Tray.Dispose();
+                                p.WaitForExit();
+
+                                Application.Exit();
+                            }
+                            else if (CLOSE == DialogResult.No)
+                            {
+                                FC.Cancel = false;
+                                Application.Exit();
+                                if (Tray.Visible == true)
+                                {
+                                    Tray.Dispose();
+                                }
+                            }
+                            else if (CLOSE == DialogResult.Cancel)
+                            {
+                                FC.Cancel = true;
+                            }
+                            else
+                            {
+                                //error//
+                            }
+                        }
+                        else
+                        {
+                            CLOSE = MessageBox.Show("Realy quit?", "Quit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (CLOSE == DialogResult.Yes)
+                            {
+                                FC.Cancel = false;
+                                Tray.Dispose();
+                                Application.Exit();
+                            }
+                            else if(CLOSE == DialogResult.No)
+                            {
+                                FC.Cancel = true;
+                            }
+                            else
+                            {
+                                //error
+                            }
+                        }
+                    }
+                    else
+                    {
+                        CLOSE = MessageBox.Show("Realy quit?", "Realy quit?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                        if (CLOSE == DialogResult.OK)
+                        {
+                            FC.Cancel = false;
+                            Application.Exit();
+                        }
+                        else
+                        {
+                            FC.Cancel = true;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region timer
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            dec = dec + 0.0167M;
+            
+#if DEBUG
+            dec = MAX;
+#endif
+
+            if (dec >= MAX + 0.001M)
+            {
+                WaitTimer.Stop();
+            }
+        }
+
+        #endregion
+
+        #region toolstrip
+        
+        #region check for updates toolstrip click
+
+        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CheckForUpdate(null, null);
+        }
+
+        #endregion
+
+        #region save world toolstrip click
+
+        private void saveWorldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string FROM = XmlReader.GetWorld();
+            if (FROM != "FTP")
+            {
+                try
+                {
+                    p.Start();
+                }
+                catch (Exception ex)
+                {
+                    Log.MakeLog(ex);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cannot backup world when backing up from FTP.");
+            }
+        }
+
+        #endregion
+
+        #region toolstrip quit button click
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        #endregion
+
+        #region options toolstrip button click
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Options().ShowDialog();
+        }
+
+        #endregion
+
+        #region Quit toolstrip button click
+
+        private void QUIT_Click(Object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region threads
 
         #region Countdown thread
 
@@ -441,162 +590,21 @@ namespace BackupV2
 
         #endregion
 
-        #region Form closing
+        #region check for update thread
 
-        private void FormCLOSED(object sender, FormClosingEventArgs FC)
+        private void Check4UpdateThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            switch (FC.CloseReason)
+            Thread.Sleep(5000);
+
+            string Updating = XmlReader.GetUpdateSettings();
+
+            if (Updating == "yes")
             {
-                case CloseReason.WindowsShutDown:
-                    try
-                    {
-                        p.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    Application.Exit();
-                    break;
-
-
-                case CloseReason.UserClosing:
-                    DialogResult CLOSE;
-                    if (OS == "NET")
-                    {
-                        string FROM = XmlReader.GetWorld();
-                        if (FROM != "FTP")
-                        {
-                            CLOSE = MessageBox.Show("Save world before closing?", "Save world?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                            if (CLOSE == DialogResult.Yes)
-                            {
-                                p.Start();
-                                FC.Cancel = false;
-                                Tray.Dispose();
-                                p.WaitForExit();
-
-                                Application.Exit();
-                            }
-                            else if (CLOSE == DialogResult.No)
-                            {
-                                FC.Cancel = false;
-                                Application.Exit();
-                                if (Tray.Visible == true)
-                                {
-                                    Tray.Dispose();
-                                }
-                            }
-                            else if (CLOSE == DialogResult.Cancel)
-                            {
-                                FC.Cancel = true;
-                            }
-                            else
-                            {
-                                //error//
-                            }
-                        }
-                        else
-                        {
-                            CLOSE = MessageBox.Show("Realy quit?", "Quit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            if (CLOSE == DialogResult.Yes)
-                            {
-                                FC.Cancel = false;
-                                Tray.Dispose();
-                                Application.Exit();
-                            }
-                            else if(CLOSE == DialogResult.No)
-                            {
-                                FC.Cancel = true;
-                            }
-                            else
-                            {
-                                //error
-                            }
-                        }
-                    }
-                    else
-                    {
-                        CLOSE = MessageBox.Show("Realy quit?", "Realy quit?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                        if (CLOSE == DialogResult.OK)
-                        {
-                            FC.Cancel = false;
-                            Application.Exit();
-                        }
-                        else
-                        {
-                            FC.Cancel = true;
-                        }
-                    }
-                    break;
+                CheckForUpdate(null, null);
             }
         }
 
         #endregion
-
-        #region options toolstrip button click
-
-        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new Options().ShowDialog();
-        }
-
-        #endregion
-
-        #region toolstrip quit button click
-        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-        #endregion
-
-        #region save world toolstrip click
-
-        private void saveWorldToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string FROM = XmlReader.GetWorld();
-            if (FROM != "FTP")
-            {
-                try
-                {
-                    p.Start();
-                }
-                catch (Exception ex)
-                {
-                    Log.MakeLog(ex);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Cannot backup world when backing up from FTP.");
-            }
-        }
-
-        #endregion
-
-        #region timer
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            dec = dec + 0.0167M;
-            
-#if DEBUG
-            dec = MAX;
-#endif
-
-            if (dec >= MAX + 0.001M)
-            {
-                WaitTimer.Stop();
-            }
-        }
-
-        #endregion
-
-        #region check for updates toolstrip click
-
-        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CheckForUpdate(null, null);
-        }
 
         #endregion
     }
