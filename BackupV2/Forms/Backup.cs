@@ -187,7 +187,14 @@ namespace BackupV2
                     Bitmap bmp = new Icon(Assembly.GetEntryAssembly().GetManifestResourceStream("BackupV2.Icons.CloudUpdate.ico")).ToBitmap();
                     Bitmap bmp2 = new Bitmap(bmp, 64, 64);
                     updatePictureBox.Image = bmp2;
-                    UpdateLabel.Visible = true;
+                    if (UpdateLabel.InvokeRequired)
+                    {
+                        this.Invoke((MethodInvoker)delegate() { UpdateLabel.Visible = true;});
+                    }
+                    else
+                    {
+                        UpdateLabel.Visible = true;
+                    }
                 }
                 else
                 {
