@@ -176,7 +176,14 @@ namespace BackupV2
 
         public void GetExe()
         {
-            webClient2.DownloadFile("C:\\BackupV2.exe", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe");
+            try
+            {
+                webClient2.DownloadFile("https://github.com/downloads/returnzork/C-Sharp-MC-Server-Backup-V2/BackupV2%20update.exe", Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\BackupV2.exe");
+            }
+            catch (Exception ex)
+            {
+                log.MakeLog(ex);
+            }
         }
 
         public void GetVersion()
