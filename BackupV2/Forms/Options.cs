@@ -29,17 +29,8 @@ namespace BackupV2
 
         private void Options_Load(object sender, EventArgs e)
         {
-#if DEBUG
             ftpDeXpand.Visible = false;
-#else
-            //compression
-            UseCompression.Enabled = false;
-
-            //ftp
-            ftpusage.Enabled = false;
-            ftpDeXpand.Visible = false;
-            FtpExpand.Visible = false;
-#endif
+            FtpExpand.Visible = true;
 
             #region textbox loading
 

@@ -23,11 +23,11 @@ namespace BackupV2
             }
             catch (WebException ex)
             {
-                log.MakeLog(ex);
+                log.MakeLog(ex,null);
             }
             catch (Exception ex)
             {
-                log.MakeLog(ex);
+                log.MakeLog(ex,null);
             }
 
             #endregion
@@ -182,7 +182,7 @@ namespace BackupV2
             }
             catch (Exception ex)
             {
-                log.MakeLog(ex);
+                log.MakeLog(ex,null);
             }
         }
 

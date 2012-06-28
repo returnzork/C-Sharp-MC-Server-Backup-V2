@@ -133,6 +133,7 @@ namespace BackupV2
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            HelpLabel.Visible = false;
             #region extract save world vbs file
 
             if (OS == "NET")
@@ -204,7 +205,7 @@ namespace BackupV2
             }
             catch (Exception ex)
             {
-                Log.MakeLog(ex);
+                Log.MakeLog(ex,null);
             }
         }
 
@@ -223,7 +224,7 @@ namespace BackupV2
                     }
                     catch (Exception ex)
                     {
-                        Log.MakeLog(ex);
+                        Log.MakeLog(ex,null);
                     }
                 }
                 else
@@ -260,6 +261,7 @@ namespace BackupV2
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            
             WaitTimer.Start();
             CountdownThread.RunWorkerAsync();
             StartButton.Enabled = false;
@@ -417,7 +419,7 @@ namespace BackupV2
                 }
                 catch (Exception ex)
                 {
-                    Log.MakeLog(ex);
+                    Log.MakeLog(ex,null);
                 }
             }
             else
@@ -461,14 +463,29 @@ namespace BackupV2
 
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (!CountdownThread.CancellationPending)
+            while (CountdownThread.CancellationPending == false)
             {
                 string FROM = XmlReader.GetWorld();
                 string TO = XmlReader.GetBackupTo();
                 string Compression = XmlReader.UseCompression();
 
 
-                if (dec != 0.00M)  //reset value when thread runs//
+                if (FROM == "" || TO == "" || MAX == 0)
+                {
+                    while (CountdownThread.CancellationPending == false)
+                    {
+                        WaitTimer.Stop();
+                        Log.MakeLog(null, "  required things are blank");
+                        this.Invoke((MethodInvoker)delegate() { StartButton.Enabled = true; });
+                        this.Invoke((MethodInvoker)delegate() { StopButton.Enabled = false; });
+                        CountdownThread.CancelAsync();
+                        this.Invoke((MethodInvoker)delegate() { HelpLabel.Visible = true; });
+                        e.Cancel = true;
+                        return;
+                    }
+                }
+
+                if (dec != 0.00M && !CountdownThread.CancellationPending)  //reset value when thread runs//
                 {
                     dec = 0.00M;
                 }
@@ -591,7 +608,7 @@ namespace BackupV2
             }
             catch (Exception ex)
             {
-                Log.MakeLog(ex);
+                Log.MakeLog(ex,null);
             }
         }
 

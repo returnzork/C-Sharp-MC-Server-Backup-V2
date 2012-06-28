@@ -43,6 +43,7 @@
             this.updatePictureBox = new System.Windows.Forms.PictureBox();
             this.UpdateLabel = new System.Windows.Forms.Label();
             this.Check4UpdateThread = new System.ComponentModel.BackgroundWorker();
+            this.HelpLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updatePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -154,11 +155,21 @@
             // 
             this.Check4UpdateThread.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Check4UpdateThread_DoWork);
             // 
+            // HelpLabel
+            // 
+            this.HelpLabel.AutoSize = true;
+            this.HelpLabel.Location = new System.Drawing.Point(29, 94);
+            this.HelpLabel.Name = "HelpLabel";
+            this.HelpLabel.Size = new System.Drawing.Size(277, 13);
+            this.HelpLabel.TabIndex = 15;
+            this.HelpLabel.Text = "(go into File>options and set the parameters to continue..)";
+            // 
             // Backup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 98);
+            this.ClientSize = new System.Drawing.Size(318, 111);
+            this.Controls.Add(this.HelpLabel);
             this.Controls.Add(this.UpdateLabel);
             this.Controls.Add(this.updatePictureBox);
             this.Controls.Add(this.StopButton);
@@ -194,6 +205,7 @@
         private System.Windows.Forms.PictureBox updatePictureBox;
         private System.Windows.Forms.Label UpdateLabel;
         private System.ComponentModel.BackgroundWorker Check4UpdateThread;
+        private System.Windows.Forms.Label HelpLabel;
     }
 }
 

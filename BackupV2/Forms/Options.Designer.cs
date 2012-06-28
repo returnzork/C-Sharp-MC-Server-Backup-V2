@@ -35,7 +35,6 @@
             this.WorldFromLabel = new System.Windows.Forms.Label();
             this.WorldToLabel = new System.Windows.Forms.Label();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.ftpusage = new System.Windows.Forms.CheckBox();
             this.FtpExpand = new System.Windows.Forms.Button();
             this.ftpDeXpand = new System.Windows.Forms.Button();
             this.WarningTextBox = new System.Windows.Forms.RichTextBox();
@@ -59,6 +58,7 @@
             this.TimeBetweenLabel = new System.Windows.Forms.Label();
             this.BackuptimeText = new System.Windows.Forms.TextBox();
             this.UpdatingCheckBox = new System.Windows.Forms.CheckBox();
+            this.Label4FTP = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // SettingsFolder
@@ -112,16 +112,6 @@
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-            // 
-            // ftpusage
-            // 
-            this.ftpusage.AutoSize = true;
-            this.ftpusage.Location = new System.Drawing.Point(231, 12);
-            this.ftpusage.Name = "ftpusage";
-            this.ftpusage.Size = new System.Drawing.Size(66, 17);
-            this.ftpusage.TabIndex = 7;
-            this.ftpusage.Text = "Use ftp?";
-            this.ftpusage.UseVisualStyleBackColor = true;
             // 
             // FtpExpand
             // 
@@ -319,11 +309,21 @@
             this.UpdatingCheckBox.Text = "Check for updates on start?";
             this.UpdatingCheckBox.UseVisualStyleBackColor = true;
             // 
+            // Label4FTP
+            // 
+            this.Label4FTP.AutoSize = true;
+            this.Label4FTP.Location = new System.Drawing.Point(265, 13);
+            this.Label4FTP.Name = "Label4FTP";
+            this.Label4FTP.Size = new System.Drawing.Size(27, 13);
+            this.Label4FTP.TabIndex = 31;
+            this.Label4FTP.Text = "FTP";
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(731, 312);
+            this.Controls.Add(this.Label4FTP);
             this.Controls.Add(this.UpdatingCheckBox);
             this.Controls.Add(this.TimeBetweenLabel);
             this.Controls.Add(this.BackuptimeText);
@@ -347,7 +347,6 @@
             this.Controls.Add(this.WarningTextBox);
             this.Controls.Add(this.ftpDeXpand);
             this.Controls.Add(this.FtpExpand);
-            this.Controls.Add(this.ftpusage);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.WorldToLabel);
             this.Controls.Add(this.WorldFromLabel);
@@ -370,7 +369,6 @@
         private System.Windows.Forms.Label WorldFromLabel;
         private System.Windows.Forms.Label WorldToLabel;
         private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.CheckBox ftpusage;
         private System.Windows.Forms.Button FtpExpand;
         private System.Windows.Forms.Button ftpDeXpand;
         private System.Windows.Forms.RichTextBox WarningTextBox;
@@ -394,5 +392,6 @@
         private System.Windows.Forms.Label TimeBetweenLabel;
         private System.Windows.Forms.TextBox BackuptimeText;
         private System.Windows.Forms.CheckBox UpdatingCheckBox;
+        private System.Windows.Forms.Label Label4FTP;
     }
 }
