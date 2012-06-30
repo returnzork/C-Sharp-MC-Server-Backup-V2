@@ -291,6 +291,7 @@ namespace BackupV2
         {
             switch (FC.CloseReason)
             {
+                #region Windows shutdown
                 case CloseReason.WindowsShutDown:
                     try
                     {
@@ -302,8 +303,9 @@ namespace BackupV2
                     }
                     Application.Exit();
                     break;
+                #endregion
 
-
+                #region user closing
                 case CloseReason.UserClosing:
                     DialogResult CLOSE;
                     if (OS == "NET")
@@ -372,6 +374,7 @@ namespace BackupV2
                         }
                     }
                     break;
+                #endregion
             }
         }
 
@@ -381,12 +384,11 @@ namespace BackupV2
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            string dec1 = XmlReader.GetBackupTime();
+            decimal MAX;
+            MAX = Convert.ToDecimal(dec1);
             dec = dec + 0.0167M;
             
-#if DEBUG
-            dec = MAX;
-#endif
-
             if (dec >= MAX + 0.001M)
             {
                 WaitTimer.Stop();
@@ -468,14 +470,15 @@ namespace BackupV2
                 string FROM = XmlReader.GetWorld();
                 string TO = XmlReader.GetBackupTo();
                 string Compression = XmlReader.UseCompression();
-
+                string MAX1 = XmlReader.GetBackupTime();
+                decimal MAX = Convert.ToDecimal(MAX1);
 
                 if (FROM == "" || TO == "" || MAX == 0)
                 {
                     while (CountdownThread.CancellationPending == false)
                     {
                         WaitTimer.Stop();
-                        Log.MakeLog(null, "  required things are blank");
+                        Log.MakeLog(null, "  required things are blank" + FROM + TO + Compression + "" + MAX.ToString());
                         this.Invoke((MethodInvoker)delegate() { StartButton.Enabled = true; });
                         this.Invoke((MethodInvoker)delegate() { StopButton.Enabled = false; });
                         CountdownThread.CancelAsync();
