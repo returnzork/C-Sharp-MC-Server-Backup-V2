@@ -21,7 +21,6 @@ namespace BackupV2
         #region decimals
 
         decimal dec = 0.00M;
-        decimal MAX = 0.00M;
 
         #endregion
         #region strings
@@ -29,7 +28,6 @@ namespace BackupV2
         string DirTo;
         string DirFrom;
         string DateNTime;
-        string VALUE;
         string OS;
         string Folder2;
 
@@ -465,20 +463,32 @@ namespace BackupV2
 
         private void CountdownThread_DoWork(object sender, DoWorkEventArgs e)
         {
+            #region Variables
+
+            string FROM;
+            string TO;
+            string Compression;
+            decimal MAX;
+            string MAX1;
+
+            #endregion
+
             while (CountdownThread.CancellationPending == false)
             {
-                string FROM = XmlReader.GetWorld();
-                string TO = XmlReader.GetBackupTo();
-                string Compression = XmlReader.UseCompression();
-                string MAX1 = XmlReader.GetBackupTime();
-                decimal MAX = Convert.ToDecimal(MAX1);
+                FROM = XmlReader.GetWorld();
+                TO = XmlReader.GetBackupTo();
+                Compression = XmlReader.UseCompression();
+                MAX1 = XmlReader.GetBackupTime();
+                MAX = Convert.ToDecimal(MAX1);
 
-                if (FROM == "" || TO == "" || MAX == 0)
+                #region Do if variables not set
+
+                if (FROM == "" || TO == "" || MAX == 0 || MAX1 == "")
                 {
                     while (CountdownThread.CancellationPending == false)
                     {
                         WaitTimer.Stop();
-                        Log.MakeLog(null, "  required things are blank" + FROM + TO + Compression + "" + MAX.ToString());
+                        Log.MakeLog(null, "required things are blank:  FROM:   " + FROM + "   TO:   " + TO + "  COMPRESSION:" +  Compression + "TIMER:   " + MAX.ToString());
                         this.Invoke((MethodInvoker)delegate() { StartButton.Enabled = true; });
                         this.Invoke((MethodInvoker)delegate() { StopButton.Enabled = false; });
                         CountdownThread.CancelAsync();
@@ -488,15 +498,14 @@ namespace BackupV2
                     }
                 }
 
+                #endregion
+
                 if (dec != 0.00M && !CountdownThread.CancellationPending)  //reset value when thread runs//
                 {
                     dec = 0.00M;
                 }
 
-                #region assign variables
-
-                VALUE = XmlReader.GetBackupTime();
-                MAX = Convert.ToDecimal(VALUE);
+                #region Assign variables
 
 
                 DirFrom = FROM;
@@ -521,6 +530,8 @@ namespace BackupV2
                 }
 
                 DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
+
+                #region Create directory and copy world
 
                 if (Directory.Exists(DirTo))
                 {
@@ -593,6 +604,7 @@ namespace BackupV2
                     //Error//
                     MessageBox.Show("ERROR");
                 }
+#endregion
             }
         }
 
