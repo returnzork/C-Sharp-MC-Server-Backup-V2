@@ -228,7 +228,7 @@ namespace BackupV2
                     }
                 }
                 else
-                    MessageBox.Show("Cannot backup world when backing up from FTP.");
+                    MessageBox.Show("Cannot save world when backing up from FTP.");
             }
 
         #endregion
