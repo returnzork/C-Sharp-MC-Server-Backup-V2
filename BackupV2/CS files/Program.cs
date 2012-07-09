@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO;
+using Ionic.Zip;
 
 namespace BackupV2
 {
@@ -31,6 +32,85 @@ namespace BackupV2
                 NativeMethods.AllocConsole();
                 if (args[0] == "B")
                 {
+                    Error_Logging Log = new Error_Logging();
+                    Xml_Reader read = new Xml_Reader();
+
+                    string FROM = read.GetWorld();
+                    string TO = read.GetBackupTo();
+                    string Compression = read.UseCompression();
+                    string DateNTime = DateTime.Now.ToString("MM.dd.yyyy  hh-mm-ss");
+
+
+                    if(!FROM.EndsWith("\\") && FROM != "FTP")
+                    {
+                        FROM = FROM + "\\";
+                    }
+                    if (!TO.EndsWith("\\") && TO != "FTP")
+                    {
+                        TO = TO + "\\";
+                    }
+
+
+
+
+                    if (!Directory.Exists(FROM) && FROM != "FTP")
+                    {
+                        Console.WriteLine("CANNOT RUN WHEN THE WORLD FOLDER DOES NOT EXIST, AND WHEN NOT RUNNING ON FTP.\r\nTest");
+                        Console.ReadKey();
+                    }
+
+
+                    if (!Directory.Exists(TO) && TO != "FTP")
+                    {
+                        Directory.CreateDirectory(TO);
+
+                        if (!Directory.Exists(TO + DateNTime))
+                        {
+                            Directory.CreateDirectory(TO + DateNTime);
+                        }
+
+                        foreach (string SubDir in Directory.GetDirectories(FROM, "*", SearchOption.AllDirectories))
+                        {
+                            Directory.CreateDirectory(SubDir.Replace(FROM, TO + DateNTime + "\\"));
+                        }
+
+
+                        //TODO Copy world
+                    }
+                    else if (Directory.Exists(TO) && TO != "FTP")
+                    {
+                        //TODO Copy world
+                    }
+                    else if (TO == "FTP")
+                    {
+                        Ftp_Upload upload = new Ftp_Upload();
+                        upload.Upload(DateNTime);
+                    }
+                    else if (FROM == "FTP")
+                    {
+                        Ftp_Download download = new Ftp_Download();
+                        download.main(DateNTime);
+                        #region compression
+                        if (Compression == "yes")
+                        {
+                            ZipFile zip = new ZipFile();
+
+                            try
+                            {
+                                zip.AddDirectory(TO + DateNTime);
+                                zip.Save(TO + DateNTime + ".zip");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error has occurred:r\n\"" + ex);
+                                Console.ReadKey();
+                                Log.MakeLog(ex, null);
+                            }
+                        }
+                        #endregion
+                    }
+
+
                     //TODO Backup
                 }
                 else if (args[0] == "R")

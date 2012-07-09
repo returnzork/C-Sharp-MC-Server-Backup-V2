@@ -37,9 +37,10 @@ namespace BackupV2
             {
                 responce = Request.GetResponse();
             }
-            catch(Exception )
+            catch(Exception)
             {
                 //creates error when the directory already exists, no need to log
+                Console.WriteLine("FTP Directory root already exists, continuing...");
             }
             
             Request = WebRequest.Create("ftp://" + Server + "/" + Folder + "/" + Folder2 + "/" + DateNTime);
@@ -51,6 +52,8 @@ namespace BackupV2
             }
             catch (Exception ex)
             {
+                Console.WriteLine("An error has occured:r\n\"" + ex);
+                Console.ReadKey();
                 log.MakeLog(ex, null);
             }
 
@@ -74,6 +77,8 @@ namespace BackupV2
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("An error has occurred:r\n\"" + ex);
+                    Console.ReadKey();
                     log.MakeLog(ex, null);
                 }
 
@@ -90,6 +95,8 @@ namespace BackupV2
                     }
                     catch (Exception ex)
                     {
+                        Console.WriteLine("An error has occured:r\n\"" + ex);
+                        Console.ReadKey();
                         log.MakeLog(ex, null);
                     }
                 }
@@ -108,10 +115,14 @@ namespace BackupV2
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("An error has occured:r\n\"" + ex);
+                    Console.ReadKey();
                     log.MakeLog(ex, null);
                 }
             }
             #endregion
+            Console.WriteLine("Finished FTP upload of world.");
+            Console.ReadKey();
         }
     }
 }

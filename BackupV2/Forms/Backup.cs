@@ -557,10 +557,23 @@ namespace BackupV2
                     }
                     else if (DirFrom != "FTP")  //if the from directory is not FTP, copy the directory.
                     {
+                        string name;
+                        string name2;
+                        string subDirName;
+                        string subDirName2;
+
+                        #region create directories
                         foreach (string CreateDir in Directory.GetDirectories(DirFrom, "*", SearchOption.AllDirectories))
                         {
-                            Directory.CreateDirectory(CreateDir.Replace(DirFrom, DirTo + DateNTime + "\\"));  //create each sub directory
+                            name2 = CreateDir;
+                            if (!name2.EndsWith("\\"))
+                                name2 = CreateDir + "\\";
+
+                            name = new FileInfo(name2).Directory.Name;
+                            Directory.CreateDirectory(DirTo + DateNTime + "\\" + name);  //create each sub directory
                         }
+                        #endregion
+
                         foreach (string file in Directory.GetFiles(DirFrom, "*", SearchOption.AllDirectories))
                         {
                             File.Copy(file, file.Replace(DirFrom, DirTo + DateNTime + "\\"));  //copy each file in sub directories, and in main directory
