@@ -28,7 +28,6 @@ namespace BackupV2
             }
             else
             {
-                //TODO console support
                 NativeMethods.AllocConsole();
                 if (args[0] == "B")
                 {
@@ -51,15 +50,15 @@ namespace BackupV2
                     }
 
 
-
-
                     if (!Directory.Exists(FROM) && FROM != "FTP")
                     {
                         Console.WriteLine("CANNOT RUN WHEN THE WORLD FOLDER DOES NOT EXIST, AND WHEN NOT RUNNING ON FTP.\r\nTest");
                         Console.ReadKey();
+                        Application.Exit();
                     }
 
-
+                    #region copy world
+                    #region Non FTP
                     if (!Directory.Exists(TO) && TO != "FTP")
                     {
                         Directory.CreateDirectory(TO);
@@ -69,23 +68,81 @@ namespace BackupV2
                             Directory.CreateDirectory(TO + DateNTime);
                         }
 
-                        foreach (string SubDir in Directory.GetDirectories(FROM, "*", SearchOption.AllDirectories))
+                        foreach (string dirPath in Directory.GetDirectories(FROM, "*", SearchOption.AllDirectories))
+                            Directory.CreateDirectory(dirPath.Replace(FROM, TO + DateNTime + "\\"));
+
+
+                        foreach (string newPath in Directory.GetFiles(FROM, "*.*", SearchOption.AllDirectories))
+                            File.Copy(newPath, newPath.Replace(FROM, TO + DateNTime + "\\"));
+
+                        Console.WriteLine("Finished copying world.");
+                        Console.ReadKey();
+                        #region compression
+                        if (Compression == "yes")
                         {
-                            Directory.CreateDirectory(SubDir.Replace(FROM, TO + DateNTime + "\\"));
+                            ZipFile zip = new ZipFile();
+
+                            try
+                            {
+                                zip.AddDirectory(TO + DateNTime);
+                                zip.Save(TO + DateNTime + ".zip");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error has occurred:r\n\"" + ex);
+                                Console.ReadKey();
+                                Log.MakeLog(ex, null);
+                            }
                         }
-
-
-                        //TODO Copy world
+                        #endregion
                     }
                     else if (Directory.Exists(TO) && TO != "FTP")
                     {
-                        //TODO Copy world
+                        if (!Directory.Exists(TO + DateNTime))
+                        {
+                            Directory.CreateDirectory(TO + DateNTime);
+                        }
+
+                        foreach (string dirPath in Directory.GetDirectories(FROM, "*", SearchOption.AllDirectories))
+                            Directory.CreateDirectory(dirPath.Replace(FROM, TO + DateNTime + "\\"));
+
+
+                        foreach (string newPath in Directory.GetFiles(FROM, "*.*", SearchOption.AllDirectories))
+                            File.Copy(newPath, newPath.Replace(FROM, TO + DateNTime + "\\"));
+
+                        Console.WriteLine("Finished copying world.");
+                        Console.ReadKey();
+
+                        #region compression
+                        if (Compression == "yes")
+                        {
+                            ZipFile zip = new ZipFile();
+
+                            try
+                            {
+                                zip.AddDirectory(TO + DateNTime);
+                                zip.Save(TO + DateNTime + ".zip");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("An error has occurred:r\n\"" + ex);
+                                Console.ReadKey();
+                                Log.MakeLog(ex, null);
+                            }
+                        }
+                        #endregion
                     }
+                    #endregion
+
+                    #region FTP
+                    #region Upload
                     else if (TO == "FTP")
                     {
                         Ftp_Upload upload = new Ftp_Upload();
                         upload.Upload(DateNTime);
                     }
+                    #endregion
+                    #region Download
                     else if (FROM == "FTP")
                     {
                         Ftp_Download download = new Ftp_Download();
@@ -109,9 +166,10 @@ namespace BackupV2
                         }
                         #endregion
                     }
+                    #endregion
+                    #endregion
 
-
-                    //TODO Backup
+                    #endregion
                 }
                 else if (args[0] == "R")
                 {

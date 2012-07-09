@@ -7,6 +7,7 @@ namespace BackupV2
     {
         public void MakeLog(Exception ex, string exception2)
         {
+            Console.WriteLine(ex.ToString(), exception2);
             FileStream fs = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\Error.log", FileMode.Append, FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs);
             sw.WriteLine("\r\n" + DateTime.Now.ToString() + ex+ exception2);

@@ -31,6 +31,7 @@ namespace BackupV2
             }
             catch (Exception EX)
             {
+                Console.WriteLine("Error:" + EX);
                 log.MakeLog(EX,null);
             }
         }
@@ -158,7 +159,6 @@ namespace BackupV2
 
 
 
-                
                 //TODO Test with actual server
 
 
@@ -179,14 +179,17 @@ namespace BackupV2
 
             catch (WebException wEx)
             {
+                Console.WriteLine("Error: " + wEx);
                 log.MakeLog(wEx,null);
             }
             catch (AccessViolationException aEx)
             {
+                Console.WriteLine("Error: " + aEx);
                 log.MakeLog(aEx,null);
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Error: " + ex);
                 log.MakeLog(ex,null);
             }
 
