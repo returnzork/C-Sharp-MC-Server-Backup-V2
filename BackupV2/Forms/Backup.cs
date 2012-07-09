@@ -386,7 +386,9 @@ namespace BackupV2
             decimal MAX;
             MAX = Convert.ToDecimal(dec1);
             dec = dec + 0.0167M;
-            
+#if DEBUG
+            dec = MAX;
+#endif
             if (dec >= MAX + 0.001M)
             {
                 WaitTimer.Stop();
@@ -517,7 +519,7 @@ namespace BackupV2
                 {
                     DirFrom = DirFrom + "\\";
                 }
-                if (!DirTo.EndsWith("\\"))
+                if (!DirTo.EndsWith("\\") && DirTo != "FTP")
                 {
                     DirTo = DirTo + "\\";
                 }
@@ -533,7 +535,7 @@ namespace BackupV2
 
                 #region Create directory and copy world
 
-                if (Directory.Exists(DirTo))
+                if (Directory.Exists(DirTo) && DirTo != "FTP")
                 {
                     if (!Directory.Exists(DirTo + DateNTime))  //create the directory for the current time if it does not exist
                     {
@@ -549,9 +551,14 @@ namespace BackupV2
                             CompressionBackground.RunWorkerAsync();
                         }
                     }
+                    else if (DirTo == "FTP")
+                    {
+                        Ftp_Upload upload = new Ftp_Upload();
+                        upload.Upload(DateNTime);
+                    }
                     else if (DirFrom != "FTP")  //if the from directory is not FTP, copy the directory.
                     {
-                        foreach(string CreateDir in Directory.GetDirectories(DirFrom, "*", SearchOption.AllDirectories))
+                        foreach (string CreateDir in Directory.GetDirectories(DirFrom, "*", SearchOption.AllDirectories))
                         {
                             Directory.CreateDirectory(CreateDir.Replace(DirFrom, DirTo + DateNTime + "\\"));  //create each sub directory
                         }
@@ -570,7 +577,7 @@ namespace BackupV2
                         //error
                     }
                 }
-                else if (!Directory.Exists(DirTo))
+                else if (!Directory.Exists(DirTo) && DirTo != "FTP")
                 {
                     Directory.CreateDirectory(DirTo);
                     if (DirFrom == "FTP")
@@ -598,6 +605,11 @@ namespace BackupV2
                             CompressionBackground.RunWorkerAsync();
                         }
                     }
+                }
+                else if (DirTo == "FTP")
+                {
+                    Ftp_Upload Upload = new Ftp_Upload();
+                    Upload.Upload(DateNTime);
                 }
                 else
                 {

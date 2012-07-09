@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CS files\Error Logging.cs" />
+    <Compile Include="CS files\Ftp Upload.cs" />
     <Compile Include="Forms\Backup.cs">
       <SubType>Form</SubType>
     </Compile>

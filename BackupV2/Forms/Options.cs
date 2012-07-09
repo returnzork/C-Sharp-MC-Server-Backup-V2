@@ -18,7 +18,7 @@ namespace BackupV2
         {
             
             InitializeComponent();
-            this.Size = new Size(350, 350);
+            this.Size = new Size(350, 360);
 
             TT.SetToolTip(UseCompression, "Check this to use Zip Compression.");
             TT.SetToolTip(WorldFromLabel, "Enter where your world is currently located");
@@ -162,7 +162,7 @@ namespace BackupV2
 
         private void FtpExpand_Click(object sender, EventArgs e)
         {
-            this.Size = new Size(750, 350);
+            this.Size = new Size(805, 360);
             FtpExpand.Visible = false;
             FtpExpand.Enabled = false;
 
