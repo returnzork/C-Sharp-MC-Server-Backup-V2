@@ -76,7 +76,19 @@ namespace BackupV2
                             File.Copy(newPath, newPath.Replace(FROM, TO + DateNTime + "\\"));
 
                         Console.WriteLine("Finished copying world.");
-                        Console.ReadKey();
+
+
+                        DateTime time = DateTime.Now;
+                        DateTime timeout = time.AddSeconds(10);
+
+                        while (time < timeout)
+                        {
+                            Console.ReadKey();
+                            Application.Exit();
+                        }
+                        Application.Exit();
+
+
                         #region compression
                         if (Compression == "yes")
                         {
@@ -110,8 +122,6 @@ namespace BackupV2
                         foreach (string newPath in Directory.GetFiles(FROM, "*.*", SearchOption.AllDirectories))
                             File.Copy(newPath, newPath.Replace(FROM, TO + DateNTime + "\\"));
 
-                        Console.WriteLine("Finished copying world.");
-                        Console.ReadKey();
 
                         #region compression
                         if (Compression == "yes")
@@ -131,9 +141,21 @@ namespace BackupV2
                             }
                         }
                         #endregion
+
+
+                        System.ComponentModel.BackgroundWorker bgworker = new System.ComponentModel.BackgroundWorker();
+                        bgworker.WorkerReportsProgress = false;
+                        bgworker.DoWork += new System.ComponentModel.DoWorkEventHandler(bgworker_DoWork);
+                        bgworker.RunWorkerAsync();
+
+                        
+
+
+                        Console.WriteLine("Finished copying world.");
+                        Console.ReadKey();
+                        Environment.Exit(0);
                     }
                     #endregion
-
                     #region FTP
                     #region Upload
                     else if (TO == "FTP")
@@ -168,7 +190,6 @@ namespace BackupV2
                     }
                     #endregion
                     #endregion
-
                     #endregion
                 }
                 else if (args[0] == "R")
@@ -197,6 +218,19 @@ namespace BackupV2
                     Console.ReadKey();
                 }
             }
+        }
+
+        static void bgworker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            DateTime Now = DateTime.Now;
+            DateTime End = DateTime.Now.AddSeconds(10);
+
+            while (Now <= End)
+            {
+                System.Threading.Thread.Sleep(10);
+                Now = DateTime.Now;
+            }
+            Environment.Exit(0);
         }
     }
 }
