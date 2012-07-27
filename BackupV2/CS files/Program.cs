@@ -20,6 +20,7 @@ namespace BackupV2
 
         static void Main(string[] args)
         {
+            
             if (args.Length == 0)
             {
                 Application.EnableVisualStyles();
@@ -29,10 +30,22 @@ namespace BackupV2
             else
             {
                 NativeMethods.AllocConsole();
-                if (args[0] == "B")
+                if (args[0].ToLower() == "b" || args[0].ToLower() == "/b")
+                #region backup
                 {
+
                     Error_Logging Log = new Error_Logging();
                     Xml_Reader read = new Xml_Reader();
+
+                    if (!Directory.Exists(Environment.GetEnvironmentVariable("appdata") + "\\returnzork\\") || !File.Exists(Environment.GetEnvironmentVariable("appdata") + "\\returnzork\\Settings.config"))
+                    {
+                        Log.MakeLog(null, "  Settings do not exist, cannot continue.");
+                        Console.WriteLine("The settings file does not exist. Cannot continue without the settings file.");
+                        Console.ReadKey();
+                        Environment.Exit(0);
+                    }
+
+
 
                     string FROM = read.GetWorld();
                     string TO = read.GetBackupTo();
@@ -54,11 +67,12 @@ namespace BackupV2
                     {
                         Console.WriteLine("CANNOT RUN WHEN THE WORLD FOLDER DOES NOT EXIST, AND WHEN NOT RUNNING ON FTP.\r\nTest");
                         Console.ReadKey();
-                        Application.Exit();
+                        Environment.Exit(0);
                     }
 
                     #region copy world
                     #region Non FTP
+                    #region not exist
                     if (!Directory.Exists(TO) && TO != "FTP")
                     {
                         Directory.CreateDirectory(TO);
@@ -78,14 +92,12 @@ namespace BackupV2
                         Console.WriteLine("Finished copying world.");
 
 
-                        DateTime time = DateTime.Now;
-                        DateTime timeout = time.AddSeconds(10);
 
-                        while (time < timeout)
-                        {
-                            Console.ReadKey();
-                            Application.Exit();
-                        }
+                        System.ComponentModel.BackgroundWorker bgworker = new System.ComponentModel.BackgroundWorker();
+                        bgworker.DoWork +=new System.ComponentModel.DoWorkEventHandler(bgworker_DoWork);
+                        bgworker.RunWorkerAsync();
+
+                        Console.ReadKey();
                         Application.Exit();
 
 
@@ -108,6 +120,8 @@ namespace BackupV2
                         }
                         #endregion
                     }
+                    #endregion
+                    #region Exists
                     else if (Directory.Exists(TO) && TO != "FTP")
                     {
                         if (!Directory.Exists(TO + DateNTime))
@@ -156,12 +170,22 @@ namespace BackupV2
                         Environment.Exit(0);
                     }
                     #endregion
+                    #endregion
                     #region FTP
                     #region Upload
                     else if (TO == "FTP")
                     {
                         Ftp_Upload upload = new Ftp_Upload();
                         upload.Upload(DateNTime);
+
+                        System.ComponentModel.BackgroundWorker bgworker = new System.ComponentModel.BackgroundWorker();
+                        bgworker.WorkerReportsProgress = false;
+                        bgworker.DoWork += new System.ComponentModel.DoWorkEventHandler(bgworker_DoWork);
+                        bgworker.RunWorkerAsync();
+
+                        Console.WriteLine("Finished");
+                        Console.ReadKey();
+                        Environment.Exit(0);
                     }
                     #endregion
                     #region Download
@@ -187,12 +211,23 @@ namespace BackupV2
                             }
                         }
                         #endregion
+
+                        System.ComponentModel.BackgroundWorker bgworker = new System.ComponentModel.BackgroundWorker();
+                        bgworker.WorkerReportsProgress = false;
+                        bgworker.DoWork += new System.ComponentModel.DoWorkEventHandler(bgworker_DoWork);
+                        bgworker.RunWorkerAsync();
+
+                        Console.WriteLine("Finished");
+                        Console.ReadKey();
+                        Environment.Exit(0);
                     }
                     #endregion
                     #endregion
                     #endregion
                 }
-                else if (args[0] == "R")
+                #endregion
+                else if (args[0].ToLower() == "r" || args[0].ToLower() == "/r")
+                #region reset settings
                 {
                     if (Directory.Exists(Environment.GetEnvironmentVariable("APPDATA") + "\\returnzork\\"))
                     {
@@ -207,16 +242,101 @@ namespace BackupV2
                     Console.WriteLine("Press any key to exit...");
                     Console.ReadKey();
                 }
-                else
+                #endregion
+                else if (args[0].ToLower() == "settings" || args[0].ToLower() == "/s")
+                #region Current settings
                 {
+                    Xml_Reader xml = new Xml_Reader();
+
+                    Console.WriteLine("Current settings are:");
+                    Console.WriteLine();
+                    Console.WriteLine();
+
+
+
+                    Console.WriteLine();
+                    Console.WriteLine("Backup time is:  " + xml.GetBackupTime() + " minute(s)");
+                    Console.WriteLine();
+                    Console.WriteLine();
+
+                    if (xml.GetBackupTo() == "ftp")
+                    {
+                        Console.WriteLine("Backup to ftp is:  on");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Backup to ftp is:  off");
+                    }
+                    if (xml.GetWorld() == "ftp")
+                    {
+                        Console.WriteLine("Backup from ftp is:  on");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Backup from ftp is:  off");
+                    }
+
+
+
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    if (xml.GetWorld() != "ftp")
+                    {
+                        Console.WriteLine("Backup from directory is:   " + xml.GetWorld());
+                    }
+                    else
+                    {
+                        Console.WriteLine("Backup from directory is:   ftp:\\\\" + xml.GetFtpServer() + "\\" + xml.GetFtpFolder() + "\\" + xml.GetFtpFolder2());
+                    }
+
+                    if (xml.GetBackupTo() != "ftp")
+                    {
+                        Console.WriteLine("Backup to directory is:  " + xml.GetBackupTo());
+                    }
+                    else
+                    {
+                        Console.WriteLine("Backup to directory is:   ftp:\\\\" + xml.GetFtpServer() + "\\" + xml.GetFtpFolder() + "\\" +xml.GetFtpFolder2());
+                    }
+
+                    Console.WriteLine();
+                    Console.WriteLine();
+
+                    if(xml.GetUpdateSettings() == "no")
+                    {
+                        Console.WriteLine("Auto updating is:  " + "off");
+                    }
+                    else if (xml.GetUpdateSettings() == "yes")
+                    {
+                        Console.WriteLine("Auto updating is:  " + "on");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Auto updating is:  " + "not defined");
+                    }
+
+                    Console.WriteLine();
+                    Console.ReadLine();
+                }
+                #endregion
+                else
+                #region help
+                {
+                    if (args[0] != "/?")
+                    {
+                        Console.WriteLine("Invalid argument: " + args[0]);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                    }
                     Console.WriteLine("BackupV2.exe usage:");
+                    Console.WriteLine("");
                     Console.WriteLine("/?: This help message");
-                    Console.WriteLine("B: Backup using the configuration files");
-                    Console.WriteLine("R: Delete all settings files. Start fresh.");
+                    Console.WriteLine("/B: Backup using the configuration files");
+                    Console.WriteLine("/R: Delete all settings files. Start fresh.");
                     Console.WriteLine("");
                     Console.WriteLine("Press any key to exit...");
                     Console.ReadKey();
                 }
+                #endregion
             }
         }
 
