@@ -8,7 +8,6 @@ namespace BackupV2
         public void MakeLog(Exception ex, string exception2)
         {
             FileStream fs = null;
-            //TODO fix this so the console can report errors
             if (!Directory.Exists(Environment.GetEnvironmentVariable("appdata") + "\\returnzork"))
             {
                 Directory.CreateDirectory(Environment.GetEnvironmentVariable("appdata") + "\\returnzork");
